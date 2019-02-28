@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="admin" />
+        <module name="demo" />
+        <module name="east" />
+        <module name="plato-api" />
+        <module name="plato-core-1104" />
+        <module name="plato-user" />
+        <module name="plato-util" />
+        <module name="www" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="1104" target="1.5" />
+      <module name="admin" target="1.8" />
+      <module name="demo" target="1.8" />
+      <module name="east" target="1.8" />
+      <module name="plato" target="1.8" />
+      <module name="plato-api" target="1.8" />
+      <module name="plato-core" target="1.8" />
+      <module name="plato-core-1104" target="1.8" />
+      <module name="plato-user" target="1.8" />
+      <module name="plato-util" target="1.8" />
+      <module name="www" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="admin" options="-parameters" />
+      <module name="demo" options="-parameters" />
+      <module name="east" options="-parameters" />
+      <module name="plato" options="-parameters" />
+      <module name="plato-api" options="-parameters" />
+      <module name="plato-core-1104" options="-parameters" />
+      <module name="plato-user" options="-parameters" />
+      <module name="plato-util" options="-parameters" />
+      <module name="www" options="-parameters" />
+    </option>
+  </component>
+</project>

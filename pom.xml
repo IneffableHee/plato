@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.3.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>com.cbrc</groupId>
+    <artifactId>plato</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>plato</name>
+    <description>Qiannan Banking Regulatory Commission 1104-East Data Visualization System</description>
+
+    <packaging>pom</packaging>
+    <modules>
+        <module>plato-core</module>
+        <module>plato-util</module>
+        <module>plato-user</module>
+        <module>plato-api</module>
+    </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
+
+        <!--Spring 基础模块Version-->
+        <spring-core.version>4.3.5.RELEASE</spring-core.version>
+        <spring-context.version>4.3.5.RELEASE</spring-context.version>
+        <spring-beans.version>4.3.5.RELEASE</spring-beans.version>
+
+        <!--SpringMvc模块Version-->
+        <spring-web.version>4.3.5.RELEASE</spring-web.version>
+        <spring-webmvc.version>4.3.5.RELEASE</spring-webmvc.version>
+        <spring-aspects.version>4.3.5.RELEASE</spring-aspects.version>
+        <jackson-core.version>2.8.6</jackson-core.version>
+        <jackson-module.version>2.8.6</jackson-module.version>
+        <jackson-databind.version>2.8.6</jackson-databind.version>
+        <servlet-api.version>2.5</servlet-api.version>
+        <spring-context-support.version>4.3.5.RELEASE</spring-context-support.version>
+
+
+        <!--logBack模块Version-->
+        <logback-ext-spring.version>0.1.4</logback-ext-spring.version>
+
+        <!--dao 模块-->
+        <mybatis.version>3.4.1</mybatis.version>
+        <mybatis-spring.version>1.3.0</mybatis-spring.version>
+        <mysql-connector-java.version>8.0.11</mysql-connector-java.version>
+        <spring-jdbc.version>4.3.5.RELEASE</spring-jdbc.version>
+        <c3p0.version>0.9.1.2</c3p0.version>
+
+        <!--测试单元模块-->
+        <spring-test.version>4.3.5.RELEASE</spring-test.version>
+        <junit.version>4.12</junit.version>
+
+        <druid.version>1.0.29</druid.version>
+        <hutool-core.version>4.3.2</hutool-core.version>
+        <pagehelper.version>4.1.4</pagehelper.version>
+        <fastjson.version>1.2.47</fastjson.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.cbrc</groupId>
+                <artifactId>plato-api</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cbrc</groupId>
+                <artifactId>plato-core</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cbrc</groupId>
+                <artifactId>plato-user</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cbrc</groupId>
+                <artifactId>plato-util</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

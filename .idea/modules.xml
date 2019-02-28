@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/plato-api/admin/admin.iml" filepath="$PROJECT_DIR$/plato-api/admin/admin.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plato-api/demo.iml" filepath="$PROJECT_DIR$/plato-api/demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plato-core/east/east.iml" filepath="$PROJECT_DIR$/plato-core/east/east.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plato.iml" filepath="$PROJECT_DIR$/plato.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plato-api/plato-api.iml" filepath="$PROJECT_DIR$/plato-api/plato-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plato-core/plato-core.iml" filepath="$PROJECT_DIR$/plato-core/plato-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plato-core/1104/plato-core-1104.iml" filepath="$PROJECT_DIR$/plato-core/1104/plato-core-1104.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plato-user/plato-user.iml" filepath="$PROJECT_DIR$/plato-user/plato-user.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plato-util/plato-util.iml" filepath="$PROJECT_DIR$/plato-util/plato-util.iml" />
+      <module fileurl="file://$PROJECT_DIR$/plato-api/www/www.iml" filepath="$PROJECT_DIR$/plato-api/www/www.iml" />
+    </modules>
+  </component>
+</project>

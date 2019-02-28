@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" addBOMForNewFiles="with NO BOM">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/plato-api" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/plato-api/admin" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/plato-api/admin" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/plato-api/www" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/plato-core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/plato-core/1104" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/plato-core/east" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/plato-user" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/plato-util" charset="UTF-8" />
+  </component>
+</project>
