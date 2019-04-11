@@ -1,15 +1,35 @@
 package com.cbrc.plato.core.east.model;
 
+import java.util.Date;
+
 public class EastUser {
     private Integer userId;
 
     private String userName;
 
-    private String userPass;
+    private String userPwd;
 
-    private String userGender;
+    private String userPhone;
 
-    private Integer userAge;
+    private String userRealName;
+
+    private Integer userStatus;
+
+    private String userLevel;
+
+    private Integer userDepId;
+
+    private Integer userRoleId;
+
+    private Date createTime;
+
+    private Date lastLoginTime;
+
+    private Date userUpdatetime;
+
+    private String param1;
+
+    private String param2;
 
     public Integer getUserId() {
         return userId;
@@ -27,27 +47,99 @@ public class EastUser {
         this.userName = userName == null ? null : userName.trim();
     }
 
-    public String getUserPass() {
-        return userPass;
+    public String getUserPwd() {
+        return userPwd;
     }
 
-    public void setUserPass(String userPass) {
-        this.userPass = userPass == null ? null : userPass.trim();
+    public void setUserPwd(String userPwd) {
+        this.userPwd = userPwd == null ? null : userPwd.trim();
     }
 
-    public String getUserGender() {
-        return userGender;
+    public String getUserPhone() {
+        return userPhone;
     }
 
-    public void setUserGender(String userGender) {
-        this.userGender = userGender == null ? null : userGender.trim();
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone == null ? null : userPhone.trim();
     }
 
-    public Integer getUserAge() {
-        return userAge;
+    public String getUserRealName() {
+        return userRealName;
     }
 
-    public void setUserAge(Integer userAge) {
-        this.userAge = userAge;
+    public void setUserRealName(String userRealName) {
+        this.userRealName = userRealName == null ? null : userRealName.trim();
+    }
+
+    public Integer getUserStatus() {
+        return userStatus;
+    }
+
+    public void setUserStatus(Integer userStatus) {
+        this.userStatus = userStatus;
+    }
+
+    public String getUserLevel() {
+        return userLevel;
+    }
+
+    public void setUserLevel(String userLevel) {
+        this.userLevel = userLevel == null ? null : userLevel.trim();
+    }
+
+    public Integer getUserDepId() {
+        return userDepId;
+    }
+
+    public void setUserDepId(Integer userDepId) {
+        this.userDepId = userDepId;
+    }
+
+    public Integer getUserRoleId() {
+        return userRoleId;
+    }
+
+    public void setUserRoleId(Integer userRoleId) {
+        this.userRoleId = userRoleId;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLoginTime(Date lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
+    }
+
+    public Date getUserUpdatetime() {
+        return userUpdatetime;
+    }
+
+    public void setUserUpdatetime(Date userUpdatetime) {
+        this.userUpdatetime = userUpdatetime;
+    }
+
+    public String getParam1() {
+        return param1;
+    }
+
+    public void setParam1(String param1) {
+        this.param1 = param1 == null ? null : param1.trim();
+    }
+
+    public String getParam2() {
+        return param2;
+    }
+
+    public void setParam2(String param2) {
+        this.param2 = param2 == null ? null : param2.trim();
     }
 }

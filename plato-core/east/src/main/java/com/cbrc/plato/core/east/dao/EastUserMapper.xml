@@ -4,109 +4,48 @@
   <resultMap id="BaseResultMap" type="com.cbrc.plato.core.east.model.EastUser">
     <id column="user_id" jdbcType="INTEGER" property="userId" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
-    <result column="user_pass" jdbcType="VARCHAR" property="userPass" />
-    <result column="user_gender" jdbcType="VARCHAR" property="userGender" />
-    <result column="user_age" jdbcType="INTEGER" property="userAge" />
+    <result column="user_pwd" jdbcType="VARCHAR" property="userPwd" />
+    <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
+    <result column="user_real_name" jdbcType="VARCHAR" property="userRealName" />
+    <result column="user_status" jdbcType="INTEGER" property="userStatus" />
+    <result column="user_level" jdbcType="VARCHAR" property="userLevel" />
+    <result column="user_dep_id" jdbcType="INTEGER" property="userDepId" />
+    <result column="user_role_id" jdbcType="INTEGER" property="userRoleId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="user_updatetime" jdbcType="TIMESTAMP" property="userUpdatetime" />
+    <result column="param1" jdbcType="VARCHAR" property="param1" />
+    <result column="param2" jdbcType="VARCHAR" property="param2" />
   </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
   <sql id="Base_Column_List">
-    user_id, user_name, user_pass, user_gender, user_age
+    user_id, user_name, user_pwd, user_phone, user_real_name, user_status, user_level, 
+    user_dep_id, user_role_id, create_time, last_login_time, user_updatetime, param1, 
+    param2
   </sql>
-  <select id="selectByExample" parameterType="com.cbrc.plato.core.east.model.EastUserExample" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from user
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from user
+    from qnyj_user
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from user
+    delete from qnyj_user
     where user_id = #{userId,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.cbrc.plato.core.east.model.EastUserExample">
-    delete from user
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.cbrc.plato.core.east.model.EastUser">
-    insert into user (user_id, user_name, user_pass, 
-      user_gender, user_age)
-    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPass,jdbcType=VARCHAR}, 
-      #{userGender,jdbcType=VARCHAR}, #{userAge,jdbcType=INTEGER})
+  <insert id="insert" parameterType="com.cbrc.plato.user.model.User">
+    insert into qnyj_user (user_id, user_name, user_pwd, 
+      user_phone, user_real_name, user_status, 
+      user_level, user_dep_id, user_role_id, 
+      create_time, last_login_time, user_updatetime, 
+      param1, param2)
+    values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
+      #{userPhone,jdbcType=VARCHAR}, #{userRealName,jdbcType=VARCHAR}, #{userStatus,jdbcType=INTEGER}, 
+      #{userLevel,jdbcType=VARCHAR}, #{userDepId,jdbcType=INTEGER}, #{userRoleId,jdbcType=INTEGER}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{userUpdatetime,jdbcType=TIMESTAMP}, 
+      #{param1,jdbcType=VARCHAR}, #{param2,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.cbrc.plato.core.east.model.EastUser">
-    insert into user
+  <insert id="insertSelective" parameterType="com.cbrc.plato.user.model.User">
+    insert into qnyj_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="userId != null">
         user_id,
@@ -114,14 +53,41 @@
       <if test="userName != null">
         user_name,
       </if>
-      <if test="userPass != null">
-        user_pass,
+      <if test="userPwd != null">
+        user_pwd,
       </if>
-      <if test="userGender != null">
-        user_gender,
+      <if test="userPhone != null">
+        user_phone,
       </if>
-      <if test="userAge != null">
-        user_age,
+      <if test="userRealName != null">
+        user_real_name,
+      </if>
+      <if test="userStatus != null">
+        user_status,
+      </if>
+      <if test="userLevel != null">
+        user_level,
+      </if>
+      <if test="userDepId != null">
+        user_dep_id,
+      </if>
+      <if test="userRoleId != null">
+        user_role_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time,
+      </if>
+      <if test="userUpdatetime != null">
+        user_updatetime,
+      </if>
+      <if test="param1 != null">
+        param1,
+      </if>
+      <if test="param2 != null">
+        param2,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -131,81 +97,104 @@
       <if test="userName != null">
         #{userName,jdbcType=VARCHAR},
       </if>
-      <if test="userPass != null">
-        #{userPass,jdbcType=VARCHAR},
+      <if test="userPwd != null">
+        #{userPwd,jdbcType=VARCHAR},
       </if>
-      <if test="userGender != null">
-        #{userGender,jdbcType=VARCHAR},
+      <if test="userPhone != null">
+        #{userPhone,jdbcType=VARCHAR},
       </if>
-      <if test="userAge != null">
-        #{userAge,jdbcType=INTEGER},
+      <if test="userRealName != null">
+        #{userRealName,jdbcType=VARCHAR},
+      </if>
+      <if test="userStatus != null">
+        #{userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userLevel != null">
+        #{userLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="userDepId != null">
+        #{userDepId,jdbcType=INTEGER},
+      </if>
+      <if test="userRoleId != null">
+        #{userRoleId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null">
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userUpdatetime != null">
+        #{userUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="param1 != null">
+        #{param1,jdbcType=VARCHAR},
+      </if>
+      <if test="param2 != null">
+        #{param2,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.cbrc.plato.core.east.model.EastUserExample" resultType="java.lang.Long">
-    select count(*) from user
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map">
-    update user
-    <set>
-      <if test="record.userId != null">
-        user_id = #{record.userId,jdbcType=INTEGER},
-      </if>
-      <if test="record.userName != null">
-        user_name = #{record.userName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.userPass != null">
-        user_pass = #{record.userPass,jdbcType=VARCHAR},
-      </if>
-      <if test="record.userGender != null">
-        user_gender = #{record.userGender,jdbcType=VARCHAR},
-      </if>
-      <if test="record.userAge != null">
-        user_age = #{record.userAge,jdbcType=INTEGER},
-      </if>
-    </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map">
-    update user
-    set user_id = #{record.userId,jdbcType=INTEGER},
-      user_name = #{record.userName,jdbcType=VARCHAR},
-      user_pass = #{record.userPass,jdbcType=VARCHAR},
-      user_gender = #{record.userGender,jdbcType=VARCHAR},
-      user_age = #{record.userAge,jdbcType=INTEGER}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.cbrc.plato.core.east.model.EastUser">
-    update user
+  <update id="updateByPrimaryKeySelective" parameterType="com.cbrc.plato.user.model.User">
+    update qnyj_user
     <set>
       <if test="userName != null">
         user_name = #{userName,jdbcType=VARCHAR},
       </if>
-      <if test="userPass != null">
-        user_pass = #{userPass,jdbcType=VARCHAR},
+      <if test="userPwd != null">
+        user_pwd = #{userPwd,jdbcType=VARCHAR},
       </if>
-      <if test="userGender != null">
-        user_gender = #{userGender,jdbcType=VARCHAR},
+      <if test="userPhone != null">
+        user_phone = #{userPhone,jdbcType=VARCHAR},
       </if>
-      <if test="userAge != null">
-        user_age = #{userAge,jdbcType=INTEGER},
+      <if test="userRealName != null">
+        user_real_name = #{userRealName,jdbcType=VARCHAR},
+      </if>
+      <if test="userStatus != null">
+        user_status = #{userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userLevel != null">
+        user_level = #{userLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="userDepId != null">
+        user_dep_id = #{userDepId,jdbcType=INTEGER},
+      </if>
+      <if test="userRoleId != null">
+        user_role_id = #{userRoleId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userUpdatetime != null">
+        user_updatetime = #{userUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="param1 != null">
+        param1 = #{param1,jdbcType=VARCHAR},
+      </if>
+      <if test="param2 != null">
+        param2 = #{param2,jdbcType=VARCHAR},
       </if>
     </set>
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.cbrc.plato.core.east.model.EastUser">
-    update user
+  <update id="updateByPrimaryKey" parameterType="com.cbrc.plato.user.model.User">
+    update qnyj_user
     set user_name = #{userName,jdbcType=VARCHAR},
-      user_pass = #{userPass,jdbcType=VARCHAR},
-      user_gender = #{userGender,jdbcType=VARCHAR},
-      user_age = #{userAge,jdbcType=INTEGER}
+      user_pwd = #{userPwd,jdbcType=VARCHAR},
+      user_phone = #{userPhone,jdbcType=VARCHAR},
+      user_real_name = #{userRealName,jdbcType=VARCHAR},
+      user_status = #{userStatus,jdbcType=INTEGER},
+      user_level = #{userLevel,jdbcType=VARCHAR},
+      user_dep_id = #{userDepId,jdbcType=INTEGER},
+      user_role_id = #{userRoleId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      user_updatetime = #{userUpdatetime,jdbcType=TIMESTAMP},
+      param1 = #{param1,jdbcType=VARCHAR},
+      param2 = #{param2,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
 </mapper>

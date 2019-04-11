@@ -44,9 +44,11 @@
         <servlet-api.version>2.5</servlet-api.version>
         <spring-context-support.version>4.3.5.RELEASE</spring-context-support.version>
 
-
         <!--logBack模块Version-->
         <logback-ext-spring.version>0.1.4</logback-ext-spring.version>
+
+        <shiro.version>1.4.0</shiro.version>
+        <shiro-redis.version>3.1.0</shiro-redis.version>
 
         <!--dao 模块-->
         <mybatis.version>3.4.1</mybatis.version>
@@ -71,6 +73,37 @@
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <!-- druid -->
+        <!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.25</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-core</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
         </dependency>
     </dependencies>
 
