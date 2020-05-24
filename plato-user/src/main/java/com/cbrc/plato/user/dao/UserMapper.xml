@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbrc.plato.user.dao.UserMapper">
+  <resultMap id="BaseResultMap" type="com.cbrc.plato.user.model.User">
+    <id column="user_id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_pwd" jdbcType="VARCHAR" property="userPwd" />
+    <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
+    <result column="user_real_name" jdbcType="VARCHAR" property="userRealName" />
+    <result column="user_status" jdbcType="INTEGER" property="userStatus" />
+    <result column="user_level" jdbcType="VARCHAR" property="userLevel" />
+    <result column="user_dep_id" jdbcType="INTEGER" property="userDepId" />
+    <result column="user_role_id" jdbcType="INTEGER" property="userRoleId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="user_updatetime" jdbcType="TIMESTAMP" property="userUpdatetime" />
+    <result column="salt" jdbcType="VARCHAR" property="salt"/>
+    <result column="is_admin" jdbcType="INTEGER" property="isAdmin"/>
+    <result column="create_user" jdbcType="INTEGER" property="createUser"/>
+    <result column="param1" jdbcType="VARCHAR" property="param1" />
+    <result column="param2" jdbcType="VARCHAR" property="param2" />
+    <collection property="roleList" ofType="java.lang.Integer" >
+      <result property="roleId" column="role_id"/>
+    </collection>
+  </resultMap>
+
+  <resultMap id="WebUserResultMap" type="com.cbrc.plato.user.model.WebUser">
+    <id column="user_id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_phone" jdbcType="VARCHAR" property="userPhone" />
+    <result column="user_real_name" jdbcType="VARCHAR" property="userRealName" />
+    <result column="user_status" jdbcType="INTEGER" property="userStatus" />
+    <result column="user_level" jdbcType="VARCHAR" property="userLevel" />
+    <result column="user_dep_id" jdbcType="INTEGER" property="userDepId" />
+    <result column="user_role_id" jdbcType="INTEGER" property="userRoleId" />
+    <result column="user_status" jdbcType="INTEGER" property="userStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="user_updatetime" jdbcType="TIMESTAMP" property="userUpdatetime" />
+    <result column="create_user" jdbcType="INTEGER" property="createUser"/>
+    <result column="param1" jdbcType="VARCHAR" property="param1" />
+    <result column="param2" jdbcType="VARCHAR" property="param2" />
+  </resultMap>
+
+  <sql id="Web_User_List">
+    user_id, user_name, user_phone, user_real_name, user_status, user_level,
+    user_dep_id,user_role_id,create_time, last_login_time, user_updatetime,create_user
+  </sql>
+
+  <sql id="Base_Column_List">
+    u.user_id, u.user_name, u.user_pwd, u.user_phone, u.user_real_name, u.user_status, u.user_level,
+    u.user_dep_id, u.user_role_id, u.create_time, u.last_login_time, u.user_updatetime,ur.role_id,u.salt,u.is_admin,u.create_user
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_user u
+    LEFT JOIN qnyj_user_role ur ON u.user_id = ur.user_id
+    where u.user_id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAllByUserRealName" resultMap="WebUserResultMap" parameterType="java.lang.String">
+    select qu.user_phone,qu.user_id,qu.user_name,qu.user_real_name,qu.user_dep_id,qu.user_role_id,qu.user_role_id,qu.user_status , qd.department_name as param2  from qnyj_user qu, qnyj_department qd
+    where qu.user_dep_id = qd.department_id and qu.is_admin=0
+    <if test="userRealName != '' ">
+      and qu.user_real_name like  CONCAT(CONCAT('%',#{userRealName}),'%')
+    </if>
+  </select>
+  <!--<select id="selectAll" resultMap="BaseResultMap">-->
+    <!--select-->
+    <!--<include refid="Base_Column_List" />-->
+    <!--from qnyj_user u-->
+    <!--LEFT JOIN qnyj_user_role ur ON u.user_id = ur.user_id-->
+  <!--</select>-->
+  <select id="selectWebUserAll" resultMap="WebUserResultMap">
+    select qu.user_phone,qu.user_id,qu.user_name,qu.user_real_name,qu.user_dep_id,qu.user_role_id,qu.user_role_id,qu.user_status , qd.department_name as param2  from qnyj_user qu, qnyj_department qd
+        where qu.user_dep_id = qd.department_id and qu.is_admin=0
+--     select qu.user_phone,qu.user_id,qu.user_name,qu.user_real_name,qu.user_dep_id,qu.user_role_id,qu.user_role_id,qu.user_status , qr.role_name as param1 ,qd.department_name as param2  from qnyj_user qu, qnyj_role qr , qnyj_department qd
+--     where qu.user_role_id = qr.role_id and   qu.user_dep_id = qd.department_id and qu.is_admin=0
+  </select>
+
+  <select id="selectAdminAllByUserRealName" resultMap="WebUserResultMap" parameterType="java.lang.String">
+    select qu.user_phone,qu.user_id,qu.user_name,qu.user_real_name,qu.user_dep_id,qu.user_role_id,qu.user_role_id,qu.user_status , qr.role_name as param1 ,qd.department_name as param2  from qnyj_user qu, qnyj_role qr , qnyj_department qd
+    where qu.user_role_id = qr.role_id and   qu.user_dep_id = qd.department_id and qu.is_admin=1
+    <if test="userRealName != '' ">
+      and qu.user_real_name like  CONCAT(CONCAT('%',#{userRealName}),'%')
+    </if>
+  </select>
+
+  <select id="selectUserInfoById" resultMap="WebUserResultMap" parameterType="java.lang.Integer">
+    select qu.user_phone,qu.user_id,qu.user_name,qu.user_real_name,qu.user_dep_id,qu.user_role_id,qu.user_role_id,qu.user_status , qr.role_name as param1 ,qd.department_name as param2  from qnyj_user qu, qnyj_role qr , qnyj_department qd
+    where qu.user_role_id = qr.role_id and   qu.user_dep_id = qd.department_id and qu.user_id = #{userId}
+  </select>
+
+  <select id="selectAdminWebUserAll" resultMap="WebUserResultMap">
+    select qu.user_phone,qu.user_id,qu.user_name,qu.user_real_name,qu.user_dep_id,qu.user_role_id,qu.user_role_id,qu.user_status , qr.role_name as param1 ,qd.department_name as param2  from qnyj_user qu, qnyj_role qr , qnyj_department qd
+    where qu.user_role_id = qr.role_id and   qu.user_dep_id = qd.department_id and qu.is_admin=1
+  </select>
+ <!-- <select id="selectWebUserAll" resultMap="WebUserResultMap">
+    select
+    <include refid="Web_User_List" />
+    from qnyj_user
+  </select>-->
+
+  <select id="selectWebUserByUserName" parameterType="java.lang.String" resultMap="WebUserResultMap">
+    select
+    <include refid="Web_User_List" />
+    from qnyj_user
+    where user_name = #{userName,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_user u
+    LEFT JOIN qnyj_user_role ur ON u.user_id = ur.user_id
+    where u.user_name = #{userName,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from qnyj_user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+
+  <delete id="deleteByPrimaryKeyAll" parameterType="java.lang.String">
+    delete from qnyj_user
+    where user_id in (${ids})
+  </delete>
+
+  <insert id="insert" parameterType="com.cbrc.plato.user.model.User">
+    insert into qnyj_user (user_id, user_name, user_pwd,
+      user_phone, user_real_name, user_status,
+      user_level, user_dep_id, user_role_id,
+      create_time, last_login_time, user_updatetime,
+      salt,is_admin,create_user,param1, param2)
+    values (#{id,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR},
+      #{userPhone,jdbcType=VARCHAR}, #{userRealName,jdbcType=VARCHAR}, #{userStatus,jdbcType=INTEGER},
+      #{userLevel,jdbcType=VARCHAR}, #{userDepId,jdbcType=INTEGER}, #{userRoleId,jdbcType=INTEGER},
+      #{createTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{userUpdatetime,jdbcType=TIMESTAMP},
+      #{salt,jdbcType=VARCHAR},#{isAdmin,jdbcType=INTEGER},#{createUser,jdbcType=INTEGER},#{param1,jdbcType=VARCHAR}, #{param2,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cbrc.plato.user.model.User">
+    insert into qnyj_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        user_id,
+      </if>
+      <if test="userName != null">
+        user_name,
+      </if>
+      <if test="userPwd != null">
+        user_pwd,
+      </if>
+      <if test="userPhone != null">
+        user_phone,
+      </if>
+      <if test="userRealName != null">
+        user_real_name,
+      </if>
+      <if test="userStatus != null">
+        user_status,
+      </if>
+      <if test="userLevel != null">
+        user_level,
+      </if>
+      <if test="userDepId != null">
+        user_dep_id,
+      </if>
+      <if test="userRoleId != null">
+        user_role_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time,
+      </if>
+      <if test="userUpdatetime != null">
+        user_updatetime,
+      </if>
+      <if test="salt != null">
+        salt,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="isAdmin != null">
+        is_admin,
+      </if>
+      <if test="param1 != null">
+        param1,
+      </if>
+      <if test="param2 != null">
+        param2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null">
+        #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null">
+        #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userRealName != null">
+        #{userRealName,jdbcType=VARCHAR},
+      </if>
+      <if test="userStatus != null">
+        #{userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userLevel != null">
+        #{userLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="userDepId != null">
+        #{userDepId,jdbcType=INTEGER},
+      </if>
+      <if test="userRoleId != null">
+        #{userRoleId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null">
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userUpdatetime != null">
+        #{userUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="salt != null">
+        #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=INTEGER},
+      </if>
+      <if test="isAdmin != null">
+        #{isAdmin,jdbcType=INTEGER},
+      </if>
+      <if test="param1 != null">
+        #{param1,jdbcType=VARCHAR},
+      </if>
+      <if test="param2 != null">
+        #{param2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.cbrc.plato.user.model.User">
+    update qnyj_user
+    <set>
+      <if test="userName != null">
+        user_name = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPwd != null">
+        user_pwd = #{userPwd,jdbcType=VARCHAR},
+      </if>
+      <if test="userPhone != null">
+        user_phone = #{userPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="userRealName != null">
+        user_real_name = #{userRealName,jdbcType=VARCHAR},
+      </if>
+      <if test="userStatus != null">
+        user_status = #{userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userLevel != null">
+        user_level = #{userLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="userDepId != null">
+        user_dep_id = #{userDepId,jdbcType=INTEGER},
+      </if>
+      <if test="userRoleId != null">
+        user_role_id = #{userRoleId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="userUpdatetime != null">
+        user_updatetime = #{userUpdatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="salt != null">
+        salt = #{salt,jdbcType=VARCHAR},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=INTEGER},
+      </if>
+      <if test="isAdmin != null">
+        is_admin = #{isAdmin,jdbcType=INTEGER},
+      </if>
+      <if test="param1 != null">
+        param1 = #{param1,jdbcType=VARCHAR},
+      </if>
+      <if test="param2 != null">
+        param2 = #{param2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cbrc.plato.user.model.User">
+    update qnyj_user
+    set user_name = #{userName,jdbcType=VARCHAR},
+      user_pwd = #{userPwd,jdbcType=VARCHAR},
+      user_phone = #{userPhone,jdbcType=VARCHAR},
+      user_real_name = #{userRealName,jdbcType=VARCHAR},
+      user_status = #{userStatus,jdbcType=INTEGER},
+      user_level = #{userLevel,jdbcType=VARCHAR},
+      user_dep_id = #{userDepId,jdbcType=INTEGER},
+      user_role_id = #{userRoleId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      user_updatetime = #{userUpdatetime,jdbcType=TIMESTAMP},
+      salt = #{salt,jdbcType=VARCHAR},
+      create_user = #{createUser,jdbcType=INTEGER},
+      is_admin = #{isAdmin,jdbcType=INTEGER},
+      param1 = #{param1,jdbcType=VARCHAR},
+      param2 = #{param2,jdbcType=VARCHAR}
+    where user_id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

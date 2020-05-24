@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbrc.plato.core.basic.dao.BankGroupMapper">
+  <resultMap id="BaseResultMap" type="com.cbrc.plato.core.basic.model.BankGroup">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="short_name" jdbcType="VARCHAR" property="shortName" />
+    <result column="statistic" jdbcType="INTEGER" property="statistic" />
+    <result column="statistic_name" jdbcType="VARCHAR" property="statisticName" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="dep_id" jdbcType="INTEGER" property="depId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, name, short_name, statistic, statistic_name, description, level, parent_id, dep_id
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from qnyj_bank_group
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_bank_group
+  </select>
+
+  <select id="selectAllNew" resultMap="BaseResultMap">
+    /*select qdg.*  from qnyj_data_info qdi LEFT JOIN qnyj_bank_group qdg on qdi.group_id = qdg.id GROUP BY qdi.group_id*/
+    select *  from (select qdg.*  from qnyj_data_info qdi LEFT JOIN qnyj_bank_group qdg on qdi.group_id = qdg.id GROUP BY id) bb
+      where  bb.id in (select permission_url from qnyj_permission where permission_type = 3 and  permission_id in
+    ( select permission_id from qnyj_role_permission where role_id = #{roleId})) or  bb.parent_id in  (
+    select permission_url from qnyj_permission where permission_type = 3 and  permission_id in
+    ( select permission_id from qnyj_role_permission where role_id = #{roleId}))
+  </select>
+
+  <select id="selectStatisticAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_bank_group
+    where statistic = 1
+  </select>
+
+  <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_bank_group
+    where name = #{name,jdbcType=VARCHAR}
+    or short_name = #{name,jdbcType=VARCHAR}
+    or statistic_name = #{name,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from qnyj_bank_group
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cbrc.plato.core.basic.model.BankGroup">
+    insert into qnyj_bank_group (id, name, short_name, 
+      statistic, statistic_name, description, 
+      level, parent_id, dep_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{shortName,jdbcType=VARCHAR}, 
+      #{statistic,jdbcType=INTEGER}, #{statisticName,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{level,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{depId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cbrc.plato.core.basic.model.BankGroup">
+    insert into qnyj_bank_group
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="shortName != null">
+        short_name,
+      </if>
+      <if test="statistic != null">
+        statistic,
+      </if>
+      <if test="statisticName != null">
+        statistic_name,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="depId != null">
+        dep_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="shortName != null">
+        #{shortName,jdbcType=VARCHAR},
+      </if>
+      <if test="statistic != null">
+        #{statistic,jdbcType=INTEGER},
+      </if>
+      <if test="statisticName != null">
+        #{statisticName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="depId != null">
+        #{depId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cbrc.plato.core.basic.model.BankGroup">
+    update qnyj_bank_group
+    <set>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="shortName != null">
+        short_name = #{shortName,jdbcType=VARCHAR},
+      </if>
+      <if test="statistic != null">
+        statistic = #{statistic,jdbcType=INTEGER},
+      </if>
+      <if test="statisticName != null">
+        statistic_name = #{statisticName,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="depId != null">
+        dep_id = #{depId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cbrc.plato.core.basic.model.BankGroup">
+    update qnyj_bank_group
+    set name = #{name,jdbcType=VARCHAR},
+      short_name = #{shortName,jdbcType=VARCHAR},
+      statistic = #{statistic,jdbcType=INTEGER},
+      statistic_name = #{statisticName,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      level = #{level,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      dep_id = #{depId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

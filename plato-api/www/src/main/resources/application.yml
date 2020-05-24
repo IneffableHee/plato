@@ -1,0 +1,13 @@
+server:
+  port: 8801
+  servlet:
+    context-path: /financialct
+  tomcat:
+    uri-encoding: utf-8
+
+
+spring:
+  application:
+    name: financialct
+  profiles:
+    include: common

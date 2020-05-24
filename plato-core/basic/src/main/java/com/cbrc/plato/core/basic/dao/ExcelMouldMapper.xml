@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbrc.plato.core.basic.dao.ExcelMouldMapper">
+  <resultMap id="BaseResultMap" type="com.cbrc.plato.core.basic.model.ExcelMould">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="excel_code" jdbcType="VARCHAR" property="excelCode" />
+    <result column="excel_type" jdbcType="VARCHAR" property="excelType" />
+    <result column="excel_name" jdbcType="VARCHAR" property="excelName" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="file_path" jdbcType="VARCHAR" property="filePath" />
+    <result column="bg_id" jdbcType="INTEGER" property="bgId" />
+    <result column="bg_name" jdbcType="VARCHAR" property="bgName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="department_id" jdbcType="INTEGER" property="departmentId" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="author_id" jdbcType="INTEGER" property="authorId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="param1" jdbcType="VARCHAR" property="param1" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, excel_code, excel_type, excel_name, file_name, file_path, bg_id, bg_name, create_time, 
+    department_id, author, author_id, status, param1
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from qnyj_mould_base
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByCodeAndBGName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_mould_base
+    where excel_code = #{code}
+    and bg_name = #{name}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_mould_base
+    where status = 1
+    ORDER BY bg_id , excel_type , excel_code
+  </select>
+
+  <select id="selectAlls" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_mould_base
+    where status = 1
+    <if test="code != '' ">
+      and excel_code = #{code}
+    </if>
+    ORDER BY bg_id , excel_type , excel_code
+  </select>
+
+  <select id="selectMouth" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_mould_base
+    where status = 1 and excel_type = '月报'
+    ORDER BY bg_id , excel_type , excel_code
+  </select>
+
+  <select id="selectQuarter" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_mould_base
+    where status = 1 and excel_type = '季报'
+    ORDER BY bg_id , excel_type , excel_code
+  </select>
+
+  <select id="selectByBankGroupName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_mould_base
+    where bg_name = #{name,jdbcType=VARCHAR}
+    ORDER BY bg_id , excel_code
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from qnyj_mould_base
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <update id="updateByPrimaryKeys" parameterType="java.lang.Integer">
+    update qnyj_mould_base
+    set status = 0 ,create_time=SYSDATE() where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <insert id="insert" parameterType="com.cbrc.plato.core.basic.model.ExcelMould">
+    insert into qnyj_mould_base (id, excel_code, excel_type, 
+      excel_name, file_name, file_path, 
+      bg_id, bg_name, create_time, 
+      department_id, author, author_id, 
+      status, param1)
+    values (#{id,jdbcType=INTEGER}, #{excelCode,jdbcType=VARCHAR}, #{excelType,jdbcType=VARCHAR}, 
+      #{excelName,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR}, 
+      #{bgId,jdbcType=INTEGER}, #{bgName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{departmentId,jdbcType=INTEGER}, #{author,jdbcType=VARCHAR}, #{authorId,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{param1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cbrc.plato.core.basic.model.ExcelMould">
+    insert into qnyj_mould_base
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="excelCode != null">
+        excel_code,
+      </if>
+      <if test="excelType != null">
+        excel_type,
+      </if>
+      <if test="excelName != null">
+        excel_name,
+      </if>
+      <if test="fileName != null">
+        file_name,
+      </if>
+      <if test="filePath != null">
+        file_path,
+      </if>
+      <if test="bgId != null">
+        bg_id,
+      </if>
+      <if test="bgName != null">
+        bg_name,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="departmentId != null">
+        department_id,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="authorId != null">
+        author_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="param1 != null">
+        param1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="excelCode != null">
+        #{excelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="excelType != null">
+        #{excelType,jdbcType=VARCHAR},
+      </if>
+      <if test="excelName != null">
+        #{excelName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null">
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null">
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="bgId != null">
+        #{bgId,jdbcType=INTEGER},
+      </if>
+      <if test="bgName != null">
+        #{bgName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="departmentId != null">
+        #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="authorId != null">
+        #{authorId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="param1 != null">
+        #{param1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cbrc.plato.core.basic.model.ExcelMould">
+    update qnyj_mould_base
+    <set>
+      <if test="excelCode != null">
+        excel_code = #{excelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="excelType != null">
+        excel_type = #{excelType,jdbcType=VARCHAR},
+      </if>
+      <if test="excelName != null">
+        excel_name = #{excelName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null">
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null">
+        file_path = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="bgId != null">
+        bg_id = #{bgId,jdbcType=INTEGER},
+      </if>
+      <if test="bgName != null">
+        bg_name = #{bgName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="departmentId != null">
+        department_id = #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="author != null">
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="authorId != null">
+        author_id = #{authorId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="param1 != null">
+        param1 = #{param1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cbrc.plato.core.basic.model.ExcelMould">
+    update qnyj_mould_base
+    set excel_code = #{excelCode,jdbcType=VARCHAR},
+      excel_type = #{excelType,jdbcType=VARCHAR},
+      excel_name = #{excelName,jdbcType=VARCHAR},
+      file_name = #{fileName,jdbcType=VARCHAR},
+      file_path = #{filePath,jdbcType=VARCHAR},
+      bg_id = #{bgId,jdbcType=INTEGER},
+      bg_name = #{bgName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      department_id = #{departmentId,jdbcType=INTEGER},
+      author = #{author,jdbcType=VARCHAR},
+      author_id = #{authorId,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      param1 = #{param1,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

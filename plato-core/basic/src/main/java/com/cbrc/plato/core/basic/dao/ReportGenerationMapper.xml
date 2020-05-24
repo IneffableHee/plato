@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbrc.plato.core.basic.dao.ReportGenerationMapper">
+  <resultMap id="BaseResultMap" type="com.cbrc.plato.core.basic.model.ReportGeneration">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="report_time" jdbcType="VARCHAR" property="reportTime" />
+    <result column="generation_status" jdbcType="INTEGER" property="generationStatus" />
+    <result column="generation_time" jdbcType="TIME" property="generationTime" />
+    <result column="generation_user" jdbcType="INTEGER" property="generationUser" />
+    <result column="update_time" jdbcType="TIME" property="updateTime" />
+    <result column="last_update_user" jdbcType="INTEGER" property="lastUpdateUser" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, report_time, generation_status, generation_time, generation_user, update_time, 
+    last_update_user
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from qnyj_report_generation
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from qnyj_report_generation
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cbrc.plato.core.basic.model.ReportGeneration">
+    insert into qnyj_report_generation (id, report_time, generation_status, 
+      generation_time, generation_user, update_time, 
+      last_update_user)
+    values (#{id,jdbcType=INTEGER}, #{reportTime,jdbcType=VARCHAR}, #{generationStatus,jdbcType=INTEGER}, 
+      #{generationTime,jdbcType=TIME}, #{generationUser,jdbcType=INTEGER}, #{updateTime,jdbcType=TIME}, 
+      #{lastUpdateUser,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cbrc.plato.core.basic.model.ReportGeneration">
+    insert into qnyj_report_generation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="reportTime != null">
+        report_time,
+      </if>
+      <if test="generationStatus != null">
+        generation_status,
+      </if>
+      <if test="generationTime != null">
+        generation_time,
+      </if>
+      <if test="generationUser != null">
+        generation_user,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="lastUpdateUser != null">
+        last_update_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="reportTime != null">
+        #{reportTime,jdbcType=VARCHAR},
+      </if>
+      <if test="generationStatus != null">
+        #{generationStatus,jdbcType=INTEGER},
+      </if>
+      <if test="generationTime != null">
+        #{generationTime,jdbcType=TIME},
+      </if>
+      <if test="generationUser != null">
+        #{generationUser,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIME},
+      </if>
+      <if test="lastUpdateUser != null">
+        #{lastUpdateUser,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cbrc.plato.core.basic.model.ReportGeneration">
+    update qnyj_report_generation
+    <set>
+      <if test="reportTime != null">
+        report_time = #{reportTime,jdbcType=VARCHAR},
+      </if>
+      <if test="generationStatus != null">
+        generation_status = #{generationStatus,jdbcType=INTEGER},
+      </if>
+      <if test="generationTime != null">
+        generation_time = #{generationTime,jdbcType=TIME},
+      </if>
+      <if test="generationUser != null">
+        generation_user = #{generationUser,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIME},
+      </if>
+      <if test="lastUpdateUser != null">
+        last_update_user = #{lastUpdateUser,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cbrc.plato.core.basic.model.ReportGeneration">
+    update qnyj_report_generation
+    set report_time = #{reportTime,jdbcType=VARCHAR},
+      generation_status = #{generationStatus,jdbcType=INTEGER},
+      generation_time = #{generationTime,jdbcType=TIME},
+      generation_user = #{generationUser,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIME},
+      last_update_user = #{lastUpdateUser,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

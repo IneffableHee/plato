@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbrc.plato.core.basic.dao.ExcelFileMapper">
+  <resultMap id="BaseResultMap" type="com.cbrc.plato.core.basic.model.PlatoExcelFile">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="bank_id" jdbcType="INTEGER" property="bankId" />
+    <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
+    <result column="parent_zip" jdbcType="VARCHAR" property="parentZip" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+    <result column="department_id" jdbcType="INTEGER" property="departmentId" />
+    <result column="effect" jdbcType="INTEGER" property="effect" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="param1" jdbcType="VARCHAR" property="param1" />
+  </resultMap>
+
+  <resultMap id="myResultMap" type="com.cbrc.plato.core.basic.model.ExcelFileForCount">
+    <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
+    <result column="bank_id" jdbcType="INTEGER" property="bankId" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="totals" jdbcType="INTEGER" property="totals" />
+    <result column="upload" jdbcType="INTEGER" property="upload" />
+    <result column="no_upload" jdbcType="INTEGER" property="noUpload" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, bank_id, bank_name, type, code, time, name, file_name, path, parent_zip, update_time,
+    update_user, department_id, effect, status, level, param1
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_excel_library
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectTimeList" resultType="java.lang.String">
+    SELECT DISTINCT time FROM qnyj_excel_library_20190923 ORDER BY time
+  </select>
+
+  <select id="selectBankList" resultType="java.lang.String">
+    SELECT DISTINCT bank_name FROM qnyj_excel_library ORDER BY bank_name
+  </select>
+
+  <select id="selectBankTimeList" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT DISTINCT time FROM qnyj_excel_library where bank_name = #{bankName,jdbcType=VARCHAR} ORDER BY time DESC
+  </select>
+
+  <select id="selectExcelFileIsStatus"  resultMap="BaseResultMap">
+    <!--select-->
+    <!--<include refid="Base_Column_List" />-->
+    <!--from qnyj_excel_library-->excelForGenerationInfoCount
+    <!--where id in ( ${ids} )-->
+    select bank_name,name,type,code,time,status
+    from (select bank_name,name,type,code,time,status FROM qnyj_excel_library where `level`=1)a
+    where a.`status`=0
+  </select>
+
+  <!--excel  Excel 上传后成功与未上传的统计 count-->
+  <select id="excelForGenerationInfoCountNew"  resultMap="myResultMap">
+   SELECT bank_name,bank_id,time,COALESCE(count(1),0) as upload FROM qnyj_excel_library WHERE	STATUS =1
+   AND time =  ${time} and bank_id in (select id from qnyj_bank where group_id in (select id From qnyj_bank_group where id in
+  (select permission_url from qnyj_permission where permission_type = 3 and
+   permission_id in ( select permission_id from qnyj_role_permission where role_id = ${roleId})) or parent_id in (select permission_url from qnyj_permission where permission_type = 3 and
+   permission_id in ( select permission_id from qnyj_role_permission where role_id = ${roleId})))) GROUP BY bank_id
+  </select>
+
+  <!--excel  Excel 上传后成功与未上传的统计 count-->
+  <select id="excelForGenerationInfoCount"  resultMap="myResultMap" parameterType="java.lang.String">
+   SELECT aa.bank_name,aa.bank_id,aa.time,COALESCE(aa.totals,0) as totals,COALESCE(bb.upload,0) as upload,COALESCE(aa.totals - bb.upload,0) AS no_upload FROM(SELECT bank_name,bank_id,time,count(1) AS totals FROM
+   qnyj_excel_library t WHERE t.time = ${time} GROUP BY bank_id) aa LEFT JOIN (SELECT bank_id,count(1) AS upload FROM qnyj_excel_library WHERE	STATUS =1
+   AND time = ${time}  GROUP BY bank_id) bb ON aa.bank_id = bb.bank_id ORDER BY aa.bank_id
+  </select>
+
+  <!--获得上传或是未上传的详细数据-->
+  <select id="excelCountUploadInfo"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_excel_library
+    where bank_id = #{bankId,jdbcType=INTEGER}
+    and status = #{status,jdbcType=INTEGER} and time = #{time,jdbcType=VARCHAR}
+  </select>
+
+  <!--获得上传或是未上传的详细数据-->
+  <select id="excelUploadByGetTime"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_excel_library t GROUP BY t.time desc
+  </select>
+
+  <!--获得总的详细数据-->
+  <select id="excelCountUploadAllInfo"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_excel_library
+    where bank_id = #{bankId,jdbcType=INTEGER} and time = #{time,jdbcType=VARCHAR}
+  </select>
+
+  <!--更新数据-->
+  <update id="excelUpdateInfo"  parameterType="java.lang.Integer">
+     update qnyj_excel_library
+    set path = null , status = 0 where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByBankNameAndTime"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_excel_library
+    where bank_name = #{bankName,jdbcType=VARCHAR}
+    and time = #{time}
+  </select>
+
+  <select id="selectByBankIdCodeAndTime"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_excel_library
+    where bank_id = #{bid,jdbcType=INTEGER}
+    and code = #{code}
+    and time = #{time}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_excel_library
+    order by bank_id,type,code
+  </select>
+
+  <select id="findAllFileByIds" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_excel_library
+    where id in ( ${ids} )
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from qnyj_excel_library
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="com.cbrc.plato.core.basic.model.PlatoExcelFile">
+    insert into qnyj_excel_library (id, bank_id, bank_name,
+      type, code, time,
+      name, file_name, path,
+      parent_zip, update_time, update_user,
+      department_id, effect, status,
+      level, param1)
+    values (#{id,jdbcType=BIGINT}, #{bankId,jdbcType=INTEGER}, #{bankName,jdbcType=VARCHAR},
+      #{type,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{time,jdbcType=VARCHAR},
+      #{name,jdbcType=VARCHAR}, #{fileName,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR},
+      #{parentZip,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR},
+      #{departmentId,jdbcType=INTEGER}, #{effect,jdbcType=INTEGER}, #{status,jdbcType=INTEGER},
+      #{level,jdbcType=INTEGER}, #{param1,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="inserts" parameterType="java.util.List">
+    <foreach collection="list" item="item" index="index" separator=";">
+      insert into qnyj_excel_library
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="item.id != null">id,</if>
+        <if test="item.bankId != null">bank_id,</if>
+        <if test="item.bankName != null">bank_name,</if>
+        <if test="item.type != null">type,</if>
+        <if test="item.code != null">code,</if>
+        <if test="item.time != null">time,</if>
+        <if test="item.name != null">name,</if>
+        <if test="item.fileName != null">file_name,</if>
+        <if test="item.path != null">path,</if>
+        <if test="item.parentZip != null">parent_zip,</if>
+        <if test="item.updateTime != null">update_time,</if>
+        <if test="item.updateUser != null">update_user,</if>
+        <if test="item.departmentId != null">department_id,</if>
+        <if test="item.effect != null">effect,</if>
+        <if test="item.status != null">status,</if>
+        <if test="item.level != null">level,</if>
+        <if test="item.param1 != null">param1,</if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+        <if test="item.id != null">#{id,jdbcType=BIGINT},</if>
+        <if test="item.bankId != null">#{item.bankId,jdbcType=INTEGER},</if>
+        <if test="item.bankName != null">#{item.bankName,jdbcType=VARCHAR},</if>
+        <if test="item.type != null">#{item.type,jdbcType=VARCHAR},</if>
+        <if test="item.code != null">#{item.code,jdbcType=VARCHAR},</if>
+        <if test="item.time != null">#{item.time,jdbcType=VARCHAR},</if>
+        <if test="item.name != null">#{item.name,jdbcType=VARCHAR},</if>
+        <if test="item.fileName != null">#{item.fileName,jdbcType=VARCHAR},</if>
+        <if test="item.path != null">#{item.path,jdbcType=VARCHAR},</if>
+        <if test="item.parentZip != null">#{item.parentZip,jdbcType=VARCHAR},</if>
+        <if test="item.updateTime != null">#{item.updateTime,jdbcType=TIMESTAMP},</if>
+        <if test="item.updateUser != null">#{item.updateUser,jdbcType=VARCHAR},</if>
+        <if test="item.departmentId != null">#{item.departmentId,jdbcType=INTEGER},</if>
+        <if test="item.effect != null">#{item.effect,jdbcType=INTEGER},</if>
+        <if test="item.status != null">#{item.status,jdbcType=INTEGER},</if>
+        <if test="item.level != null">#{item.level,jdbcType=INTEGER},</if>
+        <if test="item.param1 != null">#{item.param1,jdbcType=VARCHAR},</if>
+      </trim>
+    </foreach>
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.cbrc.plato.core.basic.model.PlatoExcelFile">
+    insert into qnyj_excel_library
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">id,</if>
+      <if test="bankId != null">bank_id,</if>
+      <if test="bankName != null">bank_name,</if>
+      <if test="type != null">type,</if>
+      <if test="code != null">code,</if>
+      <if test="time != null">time,</if>
+      <if test="name != null">name,</if>
+      <if test="fileName != null">file_name,</if>
+      <if test="path != null">path,</if>
+      <if test="parentZip != null">parent_zip,</if>
+      <if test="updateTime != null">update_time,</if>
+      <if test="updateUser != null">update_user,</if>
+      <if test="departmentId != null">department_id,</if>
+      <if test="effect != null">effect,</if>
+      <if test="status != null">status,</if>
+      <if test="level != null">level,</if>
+      <if test="param1 != null">param1,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">#{id,jdbcType=BIGINT},</if>
+      <if test="bankId != null">#{bankId,jdbcType=INTEGER},</if>
+      <if test="bankName != null">#{bankName,jdbcType=VARCHAR},</if>
+      <if test="type != null">#{type,jdbcType=VARCHAR},</if>
+      <if test="code != null">#{code,jdbcType=VARCHAR},</if>
+      <if test="time != null">#{time,jdbcType=VARCHAR},</if>
+      <if test="name != null">#{name,jdbcType=VARCHAR},</if>
+      <if test="fileName != null">#{fileName,jdbcType=VARCHAR},</if>
+      <if test="path != null">#{path,jdbcType=VARCHAR},</if>
+      <if test="parentZip != null">#{parentZip,jdbcType=VARCHAR},</if>
+      <if test="updateTime != null">#{updateTime,jdbcType=TIMESTAMP},</if>
+      <if test="updateUser != null">#{updateUser,jdbcType=VARCHAR},</if>
+      <if test="departmentId != null">#{departmentId,jdbcType=INTEGER},</if>
+      <if test="effect != null">#{effect,jdbcType=INTEGER},</if>
+      <if test="status != null">#{status,jdbcType=INTEGER},</if>
+      <if test="level != null">#{level,jdbcType=INTEGER},</if>
+      <if test="param1 != null">#{param1,jdbcType=VARCHAR},</if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.cbrc.plato.core.basic.model.PlatoExcelFile">
+    update qnyj_excel_library
+    <set>
+      <if test="bankId != null">bank_id = #{bankId,jdbcType=BIGINT},</if>
+      <if test="bankName != null">bank_name = #{bankName,jdbcType=VARCHAR},</if>
+      <if test="type != null">type = #{type,jdbcType=VARCHAR},</if>
+      <if test="code != null">code = #{code,jdbcType=VARCHAR},</if>
+      <if test="time != null">time = #{time,jdbcType=VARCHAR},</if>
+      <if test="name != null">name = #{name,jdbcType=VARCHAR},</if>
+      <if test="fileName != null">file_name = #{fileName,jdbcType=VARCHAR},</if>
+      <if test="path != null">path = #{path,jdbcType=VARCHAR},</if>
+      <if test="parentZip != null">parent_zip = #{parentZip,jdbcType=VARCHAR},</if>
+      <if test="updateTime != null">update_time = #{updateTime,jdbcType=TIMESTAMP},</if>
+      <if test="updateUser != null">update_user = #{updateUser,jdbcType=VARCHAR},</if>
+      <if test="departmentId != null">department_id = #{departmentId,jdbcType=INTEGER},</if>
+      <if test="effect != null">effect = #{effect,jdbcType=INTEGER},</if>
+      <if test="status != null">status = #{status,jdbcType=INTEGER},</if>
+      <if test="level != null">level = #{level,jdbcType=INTEGER},</if>
+      <if test="param1 != null">param1 = #{param1,jdbcType=VARCHAR},</if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.cbrc.plato.core.basic.model.PlatoExcelFile">
+    update qnyj_excel_library
+    set bank_id = #{bankId,jdbcType=INTEGER},
+      bank_name = #{bankName,jdbcType=VARCHAR},
+      type = #{type,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      time = #{time,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      file_name = #{fileName,jdbcType=VARCHAR},
+      path = #{path,jdbcType=VARCHAR},
+      parent_zip = #{parentZip,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      department_id = #{departmentId,jdbcType=INTEGER},
+      effect = #{effect,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      level = #{level,jdbcType=INTEGER},
+      param1 = #{param1,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <update id="updates" parameterType="java.util.List">
+    <foreach collection="list" item="item" separator=";">
+      update qnyj_excel_library
+      <set>
+        <if test="item.bankId != null">bank_id = #{item.bankId,jdbcType=BIGINT},</if>
+        <if test="item.bankName != null">bank_name = #{item.bankName,jdbcType=VARCHAR},</if>
+        <if test="item.type != null">type = #{item.type,jdbcType=VARCHAR},</if>
+        <if test="item.code != null">code = #{item.code,jdbcType=VARCHAR},</if>
+        <if test="item.time != null">time = #{item.time,jdbcType=VARCHAR},</if>
+        <if test="item.name != null">name = #{item.name,jdbcType=VARCHAR},</if>
+        <if test="item.fileName != null">file_name = #{item.fileName,jdbcType=VARCHAR},</if>
+        <if test="item.path != null">path = #{item.path,jdbcType=VARCHAR},</if>
+        <if test="item.parentZip != null">parent_zip = #{item.parentZip,jdbcType=VARCHAR},</if>
+        <if test="item.updateTime != null">update_time = #{item.updateTime,jdbcType=TIMESTAMP},</if>
+        <if test="item.updateUser != null">update_user = #{item.updateUser,jdbcType=VARCHAR},</if>
+        <if test="item.departmentId != null">department_id = #{item.departmentId,jdbcType=INTEGER},</if>
+        <if test="item.effect != null">effect = #{item.effect,jdbcType=INTEGER},</if>
+        <if test="item.status != null">status = #{item.status,jdbcType=INTEGER},</if>
+        <if test="item.level != null">level = #{item.level,jdbcType=INTEGER},</if>
+        <if test="item.param1 != null">param1 = #{item.param1,jdbcType=VARCHAR},</if>
+      </set>
+      where id = #{item.id,jdbcType=BIGINT}
+    </foreach>
+  </update>
+
+  <insert id="insertsNew" parameterType="java.util.List">
+    insert into qnyj_excel_library ( bank_id, bank_name,
+      type, code, time,
+      name, file_name, path,
+      parent_zip, update_time, update_user,
+      department_id, effect, status,
+      level, param1)
+      values <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.bankId,jdbcType=INTEGER}, #{item.bankName,jdbcType=VARCHAR},
+      #{item.type,jdbcType=VARCHAR}, #{item.code,jdbcType=VARCHAR}, #{item.time,jdbcType=VARCHAR},
+      #{item.name,jdbcType=VARCHAR}, #{item.fileName,jdbcType=VARCHAR}, #{item.path,jdbcType=VARCHAR},
+      #{item.parentZip,jdbcType=VARCHAR}, #{item.updateTime,jdbcType=TIMESTAMP}, #{item.updateUser,jdbcType=VARCHAR},
+      #{item.departmentId,jdbcType=INTEGER}, #{item.effect,jdbcType=INTEGER}, #{item.status,jdbcType=INTEGER},
+      #{item.level,jdbcType=INTEGER}, #{item.param1,jdbcType=VARCHAR})
+      </foreach> ON DUPLICATE KEY UPDATE
+      bank_id = values (bank_id),bank_name = values (bank_name),type = values (type),code = values (code),time = values (time),name = values (name),
+      file_name = values (file_name),path = values (path),parent_zip = values (parent_zip),update_time = values (update_time),update_user = values (update_user),
+      department_id = values (department_id),effect = values (effect),status = values (status),level = values (level),param1 = values (param1)
+  </insert>
+</mapper>

@@ -2,14 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <dependencies>
-        <dependency>
-            <groupId>com.cbrc</groupId>
-            <artifactId>plato-core-1104</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-    </dependencies>
     <parent>
         <artifactId>plato-api</artifactId>
         <groupId>com.cbrc</groupId>
@@ -18,12 +10,43 @@
 
     <artifactId>plato-api-admin</artifactId>
 
+    <properties>
+        <ooxml-schemas-version>1.1</ooxml-schemas-version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.cbrc</groupId>
+            <artifactId>plato-core-basic</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.cbrc</groupId>
+            <artifactId>plato-core-business</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>4.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>Saxon-HE</artifactId>
+            <version>9.8.0-4</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-
+                <configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                </configuration>
             </plugin>
         </plugins>
     </build>

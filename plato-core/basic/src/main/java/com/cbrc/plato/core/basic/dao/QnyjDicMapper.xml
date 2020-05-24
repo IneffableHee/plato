@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbrc.plato.core.basic.dao.QnyjDicMapper">
+  <resultMap id="BaseResultMap" type="com.cbrc.plato.core.basic.model.QnyjDic">
+    <id column="dic_id" jdbcType="INTEGER" property="dicId" />
+    <result column="dic_name" jdbcType="VARCHAR" property="dicName" />
+    <result column="dic_code" jdbcType="VARCHAR" property="dicCode" />
+    <result column="dic_value_id" jdbcType="INTEGER" property="dicValueId" />
+    <result column="param1" jdbcType="VARCHAR" property="param1" />
+    <result column="param2" jdbcType="VARCHAR" property="param2" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    dic_id, dic_name, dic_code, dic_value_id, param1, param2
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_dic
+    where dic_id = #{dicId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAll"   resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_dic
+  </select>
+
+  <select id="selectByQnyjDicName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_dic
+    where dic_name = #{dicName,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from qnyj_dic
+    where dic_id = #{dicId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cbrc.plato.core.basic.model.QnyjDic">
+    insert into qnyj_dic (dic_id, dic_name, dic_code,
+      dic_value_id, param1, param2
+      )
+    values (#{dicId,jdbcType=INTEGER}, #{dicName,jdbcType=VARCHAR}, #{dicCode,jdbcType=VARCHAR},
+      #{dicValueId,jdbcType=INTEGER}, #{param1,jdbcType=VARCHAR}, #{param2,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cbrc.plato.core.basic.model.QnyjDic">
+    insert into qnyj_dic
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dicId != null">
+        dic_id,
+      </if>
+      <if test="dicName != null">
+        dic_name,
+      </if>
+      <if test="dicCode != null">
+        dic_code,
+      </if>
+      <if test="dicValueId != null">
+        dic_value_id,
+      </if>
+      <if test="param1 != null">
+        param1,
+      </if>
+      <if test="param2 != null">
+        param2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dicId != null">
+        #{dicId,jdbcType=INTEGER},
+      </if>
+      <if test="dicName != null">
+        #{dicName,jdbcType=VARCHAR},
+      </if>
+      <if test="dicCode != null">
+        #{dicCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dicValueId != null">
+        #{dicValueId,jdbcType=INTEGER},
+      </if>
+      <if test="param1 != null">
+        #{param1,jdbcType=VARCHAR},
+      </if>
+      <if test="param2 != null">
+        #{param2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cbrc.plato.core.basic.model.QnyjDic">
+    update qnyj_dic
+    <set>
+      <if test="dicName != null">
+        dic_name = #{dicName,jdbcType=VARCHAR},
+      </if>
+      <if test="dicCode != null">
+        dic_code = #{dicCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dicValueId != null">
+        dic_value_id = #{dicValueId,jdbcType=INTEGER},
+      </if>
+      <if test="param1 != null">
+        param1 = #{param1,jdbcType=VARCHAR},
+      </if>
+      <if test="param2 != null">
+        param2 = #{param2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where dic_id = #{dicId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cbrc.plato.core.basic.model.QnyjDic">
+    update qnyj_dic
+    set dic_name = #{dicName,jdbcType=VARCHAR},
+      dic_code = #{dicCode,jdbcType=VARCHAR},
+      dic_value_id = #{dicValueId,jdbcType=INTEGER},
+      param1 = #{param1,jdbcType=VARCHAR},
+      param2 = #{param2,jdbcType=VARCHAR}
+    where dic_id = #{dicId,jdbcType=INTEGER}
+  </update>
+</mapper>

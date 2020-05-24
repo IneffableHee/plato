@@ -13,35 +13,23 @@
     <dependencies>
         <dependency>
             <groupId>com.cbrc</groupId>
-            <artifactId>plato-core-east</artifactId>
+            <artifactId>plato-core-basic</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.cbrc</groupId>
-            <artifactId>plato-core-1104</artifactId>
+            <artifactId>plato-core-business</artifactId>
             <version>0.0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>5.1.5.RELEASE</version>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant</artifactId>
+            <version>1.9.7</version>
+            <scope>compile</scope>
         </dependency>
-
-        <dependency>
-            <groupId>com.cbrc</groupId>
-            <artifactId>plato-user</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-core</artifactId>
-            <version>1.4.0</version>
-        </dependency>
-
-
     </dependencies>
 
     <build>
@@ -52,5 +40,7 @@
             </plugin>
         </plugins>
     </build>
+
+
 
 </project>

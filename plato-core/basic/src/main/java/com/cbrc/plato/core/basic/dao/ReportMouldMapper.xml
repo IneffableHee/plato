@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbrc.plato.core.basic.dao.ReportMouldMapper">
+  <resultMap id="BaseResultMap" type="com.cbrc.plato.core.basic.model.ReportMould">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="mould_name" jdbcType="VARCHAR" property="mouldName" />
+    <result column="mould_path" jdbcType="VARCHAR" property="mouldPath" />
+    <result column="mould_describe" jdbcType="VARCHAR" property="mouldDescribe" />
+    <result column="author" jdbcType="INTEGER" property="author" />
+    <result column="create_time" jdbcType="TIME" property="createTime" />
+    <result column="update_time" jdbcType="TIME" property="updateTime" />
+    <result column="department" jdbcType="INTEGER" property="department" />
+    <result column="mould_show" jdbcType="INTEGER" property="mouldShow" />
+    <result column="mould_status" jdbcType="INTEGER" property="mouldStatus" />
+    <result column="web_file" jdbcType="VARCHAR" property="webFile" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, mould_name, mould_path, mould_describe, author, create_time, update_time, department, mould_show, mould_status,web_file
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_report_mould
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_report_mould
+  </select>
+
+  <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_report_mould
+    where author = #{uid,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from qnyj_report_mould
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cbrc.plato.core.basic.model.ReportMould">
+    insert into qnyj_report_mould (id, mould_name, mould_path,
+      mould_describe, author, create_time,
+      update_time, department, mould_show,
+      mould_status,web_file)
+    values (#{id,jdbcType=INTEGER}, #{mouldName,jdbcType=VARCHAR}, #{mouldPath,jdbcType=VARCHAR},
+      #{mouldDescribe,jdbcType=VARCHAR}, #{author,jdbcType=INTEGER}, #{createTime,jdbcType=TIME},
+      #{updateTime,jdbcType=TIME}, #{department,jdbcType=INTEGER}, #{mouldShow,jdbcType=INTEGER},
+      #{mouldStatus,jdbcType=INTEGER},#{webFile,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cbrc.plato.core.basic.model.ReportMould">
+    insert into qnyj_report_mould
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="mould_name != null">
+        mould_name,
+      </if>
+      <if test="mould_path != null">
+        mould_path,
+      </if>
+      <if test="mould_describe != null">
+        mould_describe,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="department != null">
+        department,
+      </if>
+      <if test="mould_show != null">
+        mould_show,
+      </if>
+      <if test="mould_status != null">
+        mould_status,
+      </if>
+      <if test="web_file != null">
+        web_file,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="mould_name != null">
+        #{mouldName,jdbcType=VARCHAR},
+      </if>
+      <if test="mould_path != null">
+        #{mouldPath,jdbcType=VARCHAR},
+      </if>
+      <if test="mould_describe != null">
+        #{mouldDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIME},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIME},
+      </if>
+      <if test="department != null">
+        #{department,jdbcType=INTEGER},
+      </if>
+      <if test="mould_show != null">
+        #{mouldShow,jdbcType=INTEGER},
+      </if>
+      <if test="mould_status != null">
+        #{mouldStatus,jdbcType=INTEGER},
+      </if>
+      <if test="web_file != null">
+        #{webFile,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cbrc.plato.core.basic.model.ReportMould">
+    update qnyj_report_mould
+    <set>
+      <if test="mould_name != null">
+        mould_name = #{mouldName,jdbcType=VARCHAR},
+      </if>
+      <if test="mould_path != null">
+        mould_path = #{mouldPath,jdbcType=VARCHAR},
+      </if>
+      <if test="mould_describe != null">
+        mould_describe = #{mouldDescribe,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        author = #{author,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIME},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIME},
+      </if>
+      <if test="department != null">
+        department = #{department,jdbcType=INTEGER},
+      </if>
+      <if test="mould_show != null">
+        mould_show = #{mouldShow,jdbcType=INTEGER},
+      </if>
+      <if test="mould_status != null">
+        mould_status = #{mouldStatus,jdbcType=INTEGER},
+      </if>
+      <if test="web_file != null">
+        web_file = #{webFile,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cbrc.plato.core.basic.model.ReportMould">
+    update qnyj_report_mould
+    set mould_name = #{mouldName,jdbcType=VARCHAR},
+      mould_path = #{mouldPath,jdbcType=VARCHAR},
+      mould_describe = #{mouldDescribe,jdbcType=VARCHAR},
+      author = #{author,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIME},
+      update_time = #{updateTime,jdbcType=TIME},
+      department = #{department,jdbcType=INTEGER},
+      mould_show = #{mouldShow,jdbcType=INTEGER},
+      mould_status = #{mouldStatus,jdbcType=INTEGER},
+      web_file = #{webFile,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

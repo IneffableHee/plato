@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbrc.plato.user.dao.DepartmentMapper">
+  <resultMap id="BaseResultMap" type="com.cbrc.plato.user.model.Department">
+    <id column="department_id" jdbcType="INTEGER" property="departmentId" />
+    <result column="department_name" jdbcType="VARCHAR" property="departmentName" />
+    <result column="department_code" jdbcType="VARCHAR" property="departmentCode" />
+    <result column="department_short_name" jdbcType="VARCHAR" property="departmentShortName" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="department_description" jdbcType="VARCHAR" property="departmentDescription" />
+    <result column="department_mobile" jdbcType="VARCHAR" property="departmentMobile" />
+    <result column="department_order" jdbcType="INTEGER" property="departmentOrder" />
+    <result column="department_status" jdbcType="INTEGER" property="departmentStatus" />
+    <result column="param1" jdbcType="VARCHAR" property="param1" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    department_id, department_name, department_code, department_short_name, parent_id,
+    department_description, department_mobile, department_order, department_status
+  </sql>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_department
+  </select>
+
+  <select id="selectChildListById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_department
+    where parent_id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_department
+    where department_name = #{departmentByName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_department
+    where department_id = #{departmentId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from qnyj_department
+    where department_id = #{departmentId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cbrc.plato.user.model.Department">
+    insert into qnyj_department (department_id, department_name, department_code,
+      department_short_name, parent_id, department_description,
+      department_mobile, department_order, department_status,
+      param1)
+    values (#{departmentId,jdbcType=INTEGER}, #{departmentName,jdbcType=VARCHAR}, #{departmentCode,jdbcType=VARCHAR},
+      #{departmentShortName,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{departmentDescription,jdbcType=VARCHAR},
+      #{departmentMobile,jdbcType=VARCHAR}, #{departmentOrder,jdbcType=INTEGER}, #{departmentStatus,jdbcType=INTEGER},
+      #{param1,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cbrc.plato.user.model.Department">
+    insert into qnyj_department
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="departmentId != null">
+        department_id,
+      </if>
+      <if test="departmentName != null">
+        department_name,
+      </if>
+      <if test="departmentCode != null">
+        department_code,
+      </if>
+      <if test="departmentShortName != null">
+        department_short_name,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="departmentDescription != null">
+        department_description,
+      </if>
+      <if test="departmentMobile != null">
+        department_mobile,
+      </if>
+      <if test="departmentOrder != null">
+        department_order,
+      </if>
+      <if test="departmentStatus != null">
+        department_status,
+      </if>
+      <if test="param1 != null">
+        param1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="departmentId != null">
+        #{departmentId,jdbcType=INTEGER},
+      </if>
+      <if test="departmentName != null">
+        #{departmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentCode != null">
+        #{departmentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentShortName != null">
+        #{departmentShortName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="departmentDescription != null">
+        #{departmentDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentMobile != null">
+        #{departmentMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentOrder != null">
+        #{departmentOrder,jdbcType=INTEGER},
+      </if>
+      <if test="departmentStatus != null">
+        #{departmentStatus,jdbcType=INTEGER},
+      </if>
+      <if test="param1 != null">
+        #{param1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cbrc.plato.user.model.Department">
+    update qnyj_department
+    <set>
+      <if test="departmentName != null">
+        department_name = #{departmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentCode != null">
+        department_code = #{departmentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentShortName != null">
+        department_short_name = #{departmentShortName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="departmentDescription != null">
+        department_description = #{departmentDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentMobile != null">
+        department_mobile = #{departmentMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentOrder != null">
+        department_order = #{departmentOrder,jdbcType=INTEGER},
+      </if>
+      <if test="departmentStatus != null">
+        department_status = #{departmentStatus,jdbcType=INTEGER},
+      </if>
+      <if test="param1 != null">
+        param1 = #{param1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where department_id = #{departmentId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cbrc.plato.user.model.Department">
+    update qnyj_department
+    set department_name = #{departmentName,jdbcType=VARCHAR},
+      department_code = #{departmentCode,jdbcType=VARCHAR},
+      department_short_name = #{departmentShortName,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      department_description = #{departmentDescription,jdbcType=VARCHAR},
+      department_mobile = #{departmentMobile,jdbcType=VARCHAR},
+      department_order = #{departmentOrder,jdbcType=INTEGER},
+      department_status = #{departmentStatus,jdbcType=INTEGER},
+      param1 = #{param1,jdbcType=VARCHAR}
+    where department_id = #{departmentId,jdbcType=INTEGER}
+  </update>
+</mapper>

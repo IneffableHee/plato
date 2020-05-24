@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>plato-core</artifactId>
+        <groupId>com.cbrc</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>plato-core-basic</artifactId>
+
+    <build>
+        <resources>
+            <!-- maven项目中src源代码下的xml等资源文件编译进classes文件夹，
+              注意：如果没有这个，它会自动搜索resources下是否有mapper.xml文件，
+              如果没有就会报org.apache.ibatis.binding.BindingException: Invalid bound statement (not found): com.pet.mapper.PetMapper.selectByPrimaryKey-->
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+
+</project>

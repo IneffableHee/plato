@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbrc.plato.core.basic.dao.DataMapper">
+  <resultMap id="BaseResultMap" type="com.cbrc.plato.core.basic.model.Data">
+    <id column="data_id" jdbcType="INTEGER" property="dataId" />
+    <result column="data_name" jdbcType="VARCHAR" property="dataName" />
+    <result column="data_value" jdbcType="VARCHAR" property="dataValue" />
+    <result column="data_time" jdbcType="VARCHAR" property="dataTime" />
+    <result column="data_type" jdbcType="VARCHAR" property="dataType" />
+    <result column="dep_id" jdbcType="INTEGER" property="depId" />
+    <result column="dep_name" jdbcType="VARCHAR" property="depName" />
+    <result column="only_code" jdbcType="VARCHAR" property="onlyCode" />
+    <result column="parent" jdbcType="VARCHAR" property="parent" />
+    <result column="bank_id" jdbcType="INTEGER" property="bankId" />
+    <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
+    <result column="data_info_id" jdbcType="INTEGER" property="dataInfoId" />
+    <result column="excel_name" jdbcType="VARCHAR" property="excelName" />
+    <result column="excel_code" jdbcType="VARCHAR" property="excelCode" />
+    <result column="excel_source_id" jdbcType="BIGINT" property="excelSourceId" />
+    <result column="param1" jdbcType="VARCHAR" property="param1" />
+    <result column="param2" jdbcType="VARCHAR" property="param2" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    data_id, data_name, data_value, data_time, data_type, dep_id, dep_name, only_code,parent, bank_id,
+    bank_name, data_info_id, excel_name, excel_code, excel_source_id, param1, param2
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_data
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByBankIdOnlyCodeAndTime" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_data
+    where bank_id = #{bankId,jdbcType=INTEGER} and
+    only_code = #{onlyCode,jdbcType=VARCHAR} and
+    data_time = #{time,jdbcType=VARCHAR}
+  </select>
+
+  <select id="getDataByQuanXia" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_data
+    where bank_id = ${bankId} and
+    data_time in (${dataTime})   and data_name in ('存款','贷款','资产','负债','不良率')
+
+  </select>
+
+  <select id="selectQXGLByBankAndTimes" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_data
+    where bank_id = ${bankId} and
+    data_time in ( ${times}) and data_name in ('存款','贷款','资产','负债','不良率') and  parent =''
+  </select>
+
+    <select id="selectYQ90TByBankAndTimes" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from qnyj_data
+        where bank_id = ${bankId} and
+        data_time in ( ${times}) and data_name in ('不良贷款额','逾期90天以上贷款','逾期90天以上贷款占比')
+    </select>
+  <!--资产结构的后置条件-本期新增不良贷款占新发放贷款的比例-显示正常类（正常 + 关注）降级为不良贷款的迁徙率-显示处置不良贷款占新形成不良贷款的比例-->
+    <!--村镇银行支农支小-->
+  <select id="selectBuLiangDaiKuanHZTJByBankAndTimes" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_data
+    where bank_id = ${bankId} and
+    data_time in ( ${times}) and data_name in (${stringShuJuXiang})
+  </select>
+<!--表外业务 利润率  收入比 -->
+    <select id="selectBWYWDataByBankAndTimeCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from qnyj_data
+        where bank_id = ${bankId} and
+        data_time in (${times}) and
+        only_code = ${code}
+    </select>
+
+  <select id="selectByBankAndTimes" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_data
+    where bank_id = ${bankId} and
+    data_time in ( ${times})
+  </select>
+
+  <select id="selectChildrenByParentAndBankTime" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_data
+    where bank_id = ${bankId} and
+    data_time =  ${time} and
+    parent = '${parent}'
+  </select>
+
+    <!--// 表外业务后置条件4个柱状图 时间段-->
+    <select id="selectChildrenByParentAndBankTimes" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from qnyj_data
+        where bank_id = ${bankId} and
+        data_time in ( ${times})  and
+        parent = '${parent}'
+    </select>
+
+  <select id="selectZCJGDataByBankAndTime" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_data
+    where bank_id = ${bankId} and
+    data_time =  ${time} and
+    only_code in ( ${codes} )
+  </select>
+
+  <select id="selectAllBank" resultType="java.lang.Integer">
+    select  distinct
+    bank_id
+    from qnyj_data
+  </select>
+
+  <select id="selectAllTime" resultType="java.lang.String">
+    select  distinct
+    data_time
+    from qnyj_data  order by data_time DESC
+  </select>
+
+  <select id="selectRecentTime" resultType="java.lang.String">
+    select  distinct
+    data_time
+    from qnyj_data  order by data_time DESC limit 12
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from qnyj_data
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.cbrc.plato.core.basic.model.Data">
+    insert into qnyj_data (data_id, data_name, data_value,
+      data_time, data_type, dep_id,
+      dep_name,only_code, parent, bank_id,
+      bank_name, data_info_id, excel_name,
+      excel_code, excel_source_id, param1,
+      param2)
+    values (#{dataId,jdbcType=INTEGER}, #{dataName,jdbcType=VARCHAR}, #{dataValue,jdbcType=VARCHAR},
+      #{dataTime,jdbcType=VARCHAR}, #{dataType,jdbcType=VARCHAR}, #{depId,jdbcType=INTEGER},
+      #{depName,jdbcType=VARCHAR}, #{onlyCode,jdbcType=VARCHAR},#{parent,jdbcType=VARCHAR}, #{bankId,jdbcType=INTEGER},
+      #{bankName,jdbcType=VARCHAR}, #{dataInfoId,jdbcType=INTEGER}, #{excelName,jdbcType=VARCHAR},
+      #{excelCode,jdbcType=VARCHAR}, #{excelSourceId,jdbcType=BIGINT}, #{param1,jdbcType=VARCHAR},
+      #{param2,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="insertSelective" parameterType="com.cbrc.plato.core.basic.model.Data">
+    insert into qnyj_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dataId != null">data_id,</if>
+      <if test="dataName != null">data_name,</if>
+      <if test="dataValue != null">data_value,</if>
+      <if test="dataTime != null">data_time,</if>
+      <if test="dataType != null">data_type,</if>
+      <if test="depId != null">dep_id,</if>
+      <if test="depName != null">dep_name,</if>
+      <if test="onlyCode != null">only_code,</if>
+      <if test="parent != null">parent,</if>
+      <if test="bankId != null">bank_id,</if>
+      <if test="bankName != null">bank_name,</if>
+      <if test="dataInfoId != null">data_info_id,</if>
+      <if test="excelName != null">excel_name,</if>
+      <if test="excelCode != null">excel_code,</if>
+      <if test="excelSourceId != null">excel_source_id,</if>
+      <if test="param1 != null">param1,</if>
+      <if test="param2 != null">param2,</if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dataId != null">#{dataId,jdbcType=INTEGER},</if>
+      <if test="dataName != null">#{dataName,jdbcType=VARCHAR},</if>
+      <if test="dataValue != null">#{dataValue,jdbcType=VARCHAR},</if>
+      <if test="dataTime != null">#{dataTime,jdbcType=VARCHAR},</if>
+      <if test="dataType != null">#{dataType,jdbcType=VARCHAR},</if>
+      <if test="depId != null">#{depId,jdbcType=INTEGER},</if>
+      <if test="depName != null">#{depName,jdbcType=VARCHAR},</if>
+      <if test="onlyCode != null">#{onlyCode,jdbcType=VARCHAR},</if>
+      <if test="parent != null">#{parent,jdbcType=VARCHAR},</if>
+      <if test="bankId != null">#{bankId,jdbcType=INTEGER},</if>
+      <if test="bankName != null">#{bankName,jdbcType=VARCHAR},</if>
+      <if test="dataInfoId != null">#{dataInfoId,jdbcType=INTEGER},</if>
+      <if test="excelName != null">#{excelName,jdbcType=VARCHAR},</if>
+      <if test="excelCode != null">#{excelCode,jdbcType=VARCHAR},</if>
+      <if test="excelSourceId != null">#{excelSourceId,jdbcType=BIGINT},</if>
+      <if test="param1 != null">#{param1,jdbcType=VARCHAR},</if>
+      <if test="param2 != null">#{param2,jdbcType=VARCHAR},</if>
+    </trim>
+  </insert>
+
+  <insert id="inserts" parameterType="java.util.List">
+    insert into qnyj_data
+    (data_name, data_value,
+    data_time, data_type, dep_id,dep_name,
+    only_code, parent, bank_id,bank_name,
+    data_info_id, excel_name,excel_code,
+    excel_source_id, param1,param2)
+    values <foreach collection="list" item="item" index="index" separator=",">
+    (#{item.dataName,jdbcType=VARCHAR},
+      #{item.dataValue,jdbcType=VARCHAR},
+      #{item.dataTime,jdbcType=VARCHAR},
+      #{item.dataType,jdbcType=VARCHAR},
+      #{item.depId,jdbcType=INTEGER},
+      #{item.depName,jdbcType=VARCHAR},
+      #{item.onlyCode,jdbcType=VARCHAR},
+      #{item.parent,jdbcType=VARCHAR},
+      #{item.bankId,jdbcType=INTEGER},
+      #{item.bankName,jdbcType=VARCHAR},
+      #{item.dataInfoId,jdbcType=INTEGER},
+      #{item.excelName,jdbcType=VARCHAR},
+      #{item.excelCode,jdbcType=VARCHAR},
+      #{item.excelSourceId,jdbcType=BIGINT},
+      #{item.param1,jdbcType=VARCHAR},
+      #{item.param2,jdbcType=VARCHAR})
+    </foreach>
+    ON DUPLICATE KEY UPDATE
+    data_name = values (data_name), data_value = values (data_value),data_time = values (data_time),
+    data_type = values (data_type), dep_id = values (dep_id),dep_name = values (dep_name),
+    only_code = values (only_code), parent = values (parent), bank_id = values (bank_id),bank_name = values (bank_name),
+    data_info_id = values (data_info_id), excel_name = values (excel_name),excel_code = values (excel_code),
+    excel_source_id = values (excel_source_id), param1 = values (param1),param2 = values (param2)
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.cbrc.plato.core.basic.model.Data">
+    update qnyj_data
+    <set>
+      <if test="dataName != null">
+        data_name = #{dataName,jdbcType=VARCHAR},
+      </if>
+      <if test="dataValue != null">
+        data_value = #{dataValue,jdbcType=VARCHAR},
+      </if>
+      <if test="dataTime != null">
+        data_time = #{dataTime,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null">
+        data_type = #{dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="depId != null">
+        dep_id = #{depId,jdbcType=INTEGER},
+      </if>
+      <if test="depName != null">
+        dep_name = #{depName,jdbcType=VARCHAR},
+      </if>
+      <if test="onlyCode != null">
+        parent = #{only_code,jdbcType=VARCHAR},
+      </if>
+      <if test="parent != null">
+        parent = #{parent,jdbcType=VARCHAR},
+      </if>
+      <if test="bankId != null">
+        bank_id = #{bankId,jdbcType=INTEGER},
+      </if>
+      <if test="bankName != null">
+        bank_name = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="dataInfoId != null">
+        data_info_id = #{dataInfoId,jdbcType=INTEGER},
+      </if>
+      <if test="excelName != null">
+        excel_name = #{excelName,jdbcType=VARCHAR},
+      </if>
+      <if test="excelCode != null">
+        excel_code = #{excelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="excelSourceId != null">
+        excel_source_id = #{excelSourceId,jdbcType=BIGINT},
+      </if>
+      <if test="param1 != null">
+        param1 = #{param1,jdbcType=VARCHAR},
+      </if>
+      <if test="param2 != null">
+        param2 = #{param2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cbrc.plato.core.basic.model.Data">
+    update qnyj_data
+    set data_name = #{dataName,jdbcType=VARCHAR},
+      data_value = #{dataValue,jdbcType=VARCHAR},
+      data_time = #{dataTime,jdbcType=VARCHAR},
+      data_type = #{dataType,jdbcType=VARCHAR},
+      dep_id = #{depId,jdbcType=INTEGER},
+      dep_name = #{depName,jdbcType=VARCHAR},
+      only_code = #{onlyCode,jdbcType=VARCHAR},
+      parent = #{parent,jdbcType=VARCHAR},
+      bank_id = #{bankId,jdbcType=INTEGER},
+      bank_name = #{bankName,jdbcType=VARCHAR},
+      data_info_id = #{dataInfoId,jdbcType=INTEGER},
+      excel_name = #{excelName,jdbcType=VARCHAR},
+      excel_code = #{excelCode,jdbcType=VARCHAR},
+      excel_source_id = #{excelSourceId,jdbcType=BIGINT},
+      param1 = #{param1,jdbcType=VARCHAR},
+      param2 = #{param2,jdbcType=VARCHAR}
+    where data_id = #{dataId,jdbcType=INTEGER}
+  </update>
+
+  <update id="updates" parameterType="java.util.List">
+    <foreach collection="list" item="item" separator=";">
+      update qnyj_data
+      <set>
+        <if test="item.dataName != null">data_name = #{item.dataName,jdbcType=VARCHAR},</if>
+        <if test="item.dataValue != null">data_value = #{item.dataValue,jdbcType=VARCHAR},</if>
+        <if test="item.dataTime != null">data_time = #{item.dataTime,jdbcType=VARCHAR},</if>
+        <if test="item.dataType != null">data_type = #{item.dataType,jdbcType=VARCHAR},</if>
+        <if test="item.depId != null">dep_id = #{item.depId,jdbcType=INTEGER},</if>
+        <if test="item.depName != null">dep_name = #{item.depName,jdbcType=VARCHAR},</if>
+        <if test="item.onlyCode != null">only_code = #{item.onlyCode,jdbcType=VARCHAR},</if>
+        <if test="item.parent != null">parent = #{item.parent,jdbcType=VARCHAR},</if>
+        <if test="item.bankId != null">bank_id = #{item.bankId,jdbcType=INTEGER},</if>
+        <if test="item.bankName != null">bank_name = #{item.bankName,jdbcType=VARCHAR},</if>
+        <if test="item.dataInfoId != null">data_info_id = #{item.dataInfoId,jdbcType=INTEGER},</if>
+        <if test="item.excelName != null">excel_name = #{item.excelName,jdbcType=VARCHAR},</if>
+        <if test="item.excelCode != null">excel_code = #{item.excelCode,jdbcType=VARCHAR},</if>
+        <if test="item.excelSourceId != null">excel_source_id = #{item.excelSourceId,jdbcType=BIGINT},</if>
+      </set>
+      where data_id = #{item.dataId,jdbcType=INTEGER}
+    </foreach>
+  </update>
+
+</mapper>

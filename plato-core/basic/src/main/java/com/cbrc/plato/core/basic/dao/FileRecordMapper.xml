@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbrc.plato.core.basic.dao.FileRecordMapper">
+  <resultMap id="BaseResultMap" type="com.cbrc.plato.core.basic.model.FileRecord">
+    <id column="file_record_id" jdbcType="INTEGER" property="fileRecordId" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="file_path" jdbcType="VARCHAR" property="filePath" />
+    <result column="upload_time" jdbcType="TIMESTAMP" property="uploadTime" />
+    <result column="upload_user" jdbcType="VARCHAR" property="uploadUser" />
+    <result column="file_type" jdbcType="VARCHAR" property="fileType" />
+    <result column="file_status" jdbcType="INTEGER" property="fileStatus" />
+    <result column="param1" jdbcType="VARCHAR" property="param1" />
+    <result column="param2" jdbcType="VARCHAR" property="param2" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    file_record_id, file_name, file_path, upload_time, upload_user, file_type, file_status, 
+    param1, param2
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from qnyj_file_record
+    where file_record_id = #{fileRecordId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from qnyj_file_record
+    where file_record_id = #{fileRecordId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cbrc.plato.core.basic.model.FileRecord">
+    insert into qnyj_file_record (file_record_id, file_name, file_path, 
+      upload_time, upload_user, file_type, 
+      file_status, param1, param2
+      )
+    values (#{fileRecordId,jdbcType=INTEGER}, #{fileName,jdbcType=VARCHAR}, #{filePath,jdbcType=VARCHAR}, 
+      #{uploadTime,jdbcType=TIMESTAMP}, #{uploadUser,jdbcType=VARCHAR}, #{fileType,jdbcType=VARCHAR}, 
+      #{fileStatus,jdbcType=INTEGER}, #{param1,jdbcType=VARCHAR}, #{param2,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cbrc.plato.core.basic.model.FileRecord">
+    insert into qnyj_file_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fileRecordId != null">
+        file_record_id,
+      </if>
+      <if test="fileName != null">
+        file_name,
+      </if>
+      <if test="filePath != null">
+        file_path,
+      </if>
+      <if test="uploadTime != null">
+        upload_time,
+      </if>
+      <if test="uploadUser != null">
+        upload_user,
+      </if>
+      <if test="fileType != null">
+        file_type,
+      </if>
+      <if test="fileStatus != null">
+        file_status,
+      </if>
+      <if test="param1 != null">
+        param1,
+      </if>
+      <if test="param2 != null">
+        param2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fileRecordId != null">
+        #{fileRecordId,jdbcType=INTEGER},
+      </if>
+      <if test="fileName != null">
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null">
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadTime != null">
+        #{uploadTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uploadUser != null">
+        #{uploadUser,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null">
+        #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="fileStatus != null">
+        #{fileStatus,jdbcType=INTEGER},
+      </if>
+      <if test="param1 != null">
+        #{param1,jdbcType=VARCHAR},
+      </if>
+      <if test="param2 != null">
+        #{param2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cbrc.plato.core.basic.model.FileRecord">
+    update qnyj_file_record
+    <set>
+      <if test="fileName != null">
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null">
+        file_path = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadTime != null">
+        upload_time = #{uploadTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="uploadUser != null">
+        upload_user = #{uploadUser,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null">
+        file_type = #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="fileStatus != null">
+        file_status = #{fileStatus,jdbcType=INTEGER},
+      </if>
+      <if test="param1 != null">
+        param1 = #{param1,jdbcType=VARCHAR},
+      </if>
+      <if test="param2 != null">
+        param2 = #{param2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where file_record_id = #{fileRecordId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cbrc.plato.core.basic.model.FileRecord">
+    update qnyj_file_record
+    set file_name = #{fileName,jdbcType=VARCHAR},
+      file_path = #{filePath,jdbcType=VARCHAR},
+      upload_time = #{uploadTime,jdbcType=TIMESTAMP},
+      upload_user = #{uploadUser,jdbcType=VARCHAR},
+      file_type = #{fileType,jdbcType=VARCHAR},
+      file_status = #{fileStatus,jdbcType=INTEGER},
+      param1 = #{param1,jdbcType=VARCHAR},
+      param2 = #{param2,jdbcType=VARCHAR}
+    where file_record_id = #{fileRecordId,jdbcType=INTEGER}
+  </update>
+</mapper>

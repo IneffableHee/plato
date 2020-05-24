@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbrc.plato.core.basic.dao.CheckRuleInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cbrc.plato.util.datarule.checktable.CheckRuleInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="times" jdbcType="VARCHAR" property="times" />
+    <result column="banks" jdbcType="VARCHAR" property="banks" />
+    <result column="subject_name" jdbcType="VARCHAR" property="subjectName" />
+    <result column="source_table" jdbcType="VARCHAR" property="sourceTable" />
+    <result column="source" jdbcType="VARCHAR" property="source" />
+    <result column="source_name" jdbcType="VARCHAR" property="sourceName" />
+    <result column="rule" jdbcType="VARCHAR" property="rule" />
+    <result column="target_table" jdbcType="VARCHAR" property="targetTable" />
+    <result column="target" jdbcType="VARCHAR" property="target" />
+    <result column="target_name" jdbcType="VARCHAR" property="targetName" />
+    <result column="accuracy" jdbcType="VARCHAR" property="accuracy" />
+    <result column="note" jdbcType="VARCHAR" property="note" />
+    <result column="success_message" jdbcType="VARCHAR" property="successMessage" />
+    <result column="fail_message" jdbcType="VARCHAR" property="failMessage" />
+    <result column="rule_table_id" jdbcType="INTEGER" property="ruleTableId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, type, times, banks, subject_name, source_table, source, source_name, rule, target_table, 
+    target, target_name, accuracy, note, success_message, fail_message, rule_table_id
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_check_rule_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByRuleTableId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_check_rule_info
+    where rule_table_id = #{rtId,jdbcType=INTEGER}
+    order by type DESC, subject_name DESC
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from qnyj_check_rule_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cbrc.plato.util.datarule.checktable.CheckRuleInfo">
+    insert into qnyj_check_rule_info (id, type, times, 
+      banks, subject_name, source_table, 
+      source, source_name, rule, 
+      target_table, target, target_name, 
+      accuracy, note, success_message, 
+      fail_message, rule_table_id)
+    values (#{id,jdbcType=BIGINT}, #{type,jdbcType=VARCHAR}, #{times,jdbcType=VARCHAR}, 
+      #{banks,jdbcType=VARCHAR}, #{subjectName,jdbcType=VARCHAR}, #{sourceTable,jdbcType=VARCHAR}, 
+      #{source,jdbcType=VARCHAR}, #{sourceName,jdbcType=VARCHAR}, #{rule,jdbcType=VARCHAR}, 
+      #{targetTable,jdbcType=VARCHAR}, #{target,jdbcType=VARCHAR}, #{targetName,jdbcType=VARCHAR}, 
+      #{accuracy,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, #{successMessage,jdbcType=VARCHAR}, 
+      #{failMessage,jdbcType=VARCHAR}, #{ruleTableId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cbrc.plato.util.datarule.checktable.CheckRuleInfo">
+    insert into qnyj_check_rule_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="times != null">
+        times,
+      </if>
+      <if test="banks != null">
+        banks,
+      </if>
+      <if test="subjectName != null">
+        subject_name,
+      </if>
+      <if test="sourceTable != null">
+        source_table,
+      </if>
+      <if test="source != null">
+        source,
+      </if>
+      <if test="sourceName != null">
+        source_name,
+      </if>
+      <if test="rule != null">
+        rule,
+      </if>
+      <if test="targetTable != null">
+        target_table,
+      </if>
+      <if test="target != null">
+        target,
+      </if>
+      <if test="targetName != null">
+        target_name,
+      </if>
+      <if test="accuracy != null">
+        accuracy,
+      </if>
+      <if test="note != null">
+        note,
+      </if>
+      <if test="successMessage != null">
+        success_message,
+      </if>
+      <if test="failMessage != null">
+        fail_message,
+      </if>
+      <if test="ruleTableId != null">
+        rule_table_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="times != null">
+        #{times,jdbcType=VARCHAR},
+      </if>
+      <if test="banks != null">
+        #{banks,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectName != null">
+        #{subjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceTable != null">
+        #{sourceTable,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null">
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceName != null">
+        #{sourceName,jdbcType=VARCHAR},
+      </if>
+      <if test="rule != null">
+        #{rule,jdbcType=VARCHAR},
+      </if>
+      <if test="targetTable != null">
+        #{targetTable,jdbcType=VARCHAR},
+      </if>
+      <if test="target != null">
+        #{target,jdbcType=VARCHAR},
+      </if>
+      <if test="targetName != null">
+        #{targetName,jdbcType=VARCHAR},
+      </if>
+      <if test="accuracy != null">
+        #{accuracy,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="successMessage != null">
+        #{successMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="failMessage != null">
+        #{failMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleTableId != null">
+        #{ruleTableId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cbrc.plato.util.datarule.checktable.CheckRuleInfo">
+    update qnyj_check_rule_info
+    <set>
+      <if test="type != null">
+        type = #{type,jdbcType=VARCHAR},
+      </if>
+      <if test="times != null">
+        times = #{times,jdbcType=VARCHAR},
+      </if>
+      <if test="banks != null">
+        banks = #{banks,jdbcType=VARCHAR},
+      </if>
+      <if test="subjectName != null">
+        subject_name = #{subjectName,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceTable != null">
+        source_table = #{sourceTable,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null">
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="sourceName != null">
+        source_name = #{sourceName,jdbcType=VARCHAR},
+      </if>
+      <if test="rule != null">
+        rule = #{rule,jdbcType=VARCHAR},
+      </if>
+      <if test="targetTable != null">
+        target_table = #{targetTable,jdbcType=VARCHAR},
+      </if>
+      <if test="target != null">
+        target = #{target,jdbcType=VARCHAR},
+      </if>
+      <if test="targetName != null">
+        target_name = #{targetName,jdbcType=VARCHAR},
+      </if>
+      <if test="accuracy != null">
+        accuracy = #{accuracy,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null">
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="successMessage != null">
+        success_message = #{successMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="failMessage != null">
+        fail_message = #{failMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleTableId != null">
+        rule_table_id = #{ruleTableId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cbrc.plato.util.datarule.checktable.CheckRuleInfo">
+    update qnyj_check_rule_info
+    set type = #{type,jdbcType=VARCHAR},
+      times = #{times,jdbcType=VARCHAR},
+      banks = #{banks,jdbcType=VARCHAR},
+      subject_name = #{subjectName,jdbcType=VARCHAR},
+      source_table = #{sourceTable,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      source_name = #{sourceName,jdbcType=VARCHAR},
+      rule = #{rule,jdbcType=VARCHAR},
+      target_table = #{targetTable,jdbcType=VARCHAR},
+      target = #{target,jdbcType=VARCHAR},
+      target_name = #{targetName,jdbcType=VARCHAR},
+      accuracy = #{accuracy,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      success_message = #{successMessage,jdbcType=VARCHAR},
+      fail_message = #{failMessage,jdbcType=VARCHAR},
+      rule_table_id = #{ruleTableId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <!--MySql写法-->
+  <!--<insert id="inserts" parameterType="java.util.List">-->
+    <!--<foreach collection="list" item="item" index="index" separator=";">-->
+      <!--insert into qnyj_excel_library-->
+      <!--<trim prefix="(" suffix=")" suffixOverrides=",">-->
+        <!--<if test="item.id != null">id,</if>-->
+        <!--<if test="item.bankId != null">bank_id,</if>-->
+        <!--<if test="item.bankName != null">bank_name,</if>-->
+        <!--<if test="item.type != null">type,</if>-->
+        <!--<if test="item.code != null">code,</if>-->
+        <!--<if test="item.time != null">time,</if>-->
+        <!--<if test="item.name != null">name,</if>-->
+        <!--<if test="item.fileName != null">file_name,</if>-->
+        <!--<if test="item.path != null">path,</if>-->
+        <!--<if test="item.parentZip != null">parent_zip,</if>-->
+        <!--<if test="item.updateTime != null">update_time,</if>-->
+        <!--<if test="item.updateUser != null">update_user,</if>-->
+        <!--<if test="item.departmentId != null">department_id,</if>-->
+        <!--<if test="item.effect != null">effect,</if>-->
+        <!--<if test="item.status != null">status,</if>-->
+        <!--<if test="item.level != null">level,</if>-->
+        <!--<if test="item.param1 != null">param1,</if>-->
+      <!--</trim>-->
+      <!--<trim prefix="values (" suffix=")" suffixOverrides=",">-->
+        <!--<if test="item.id != null">#{id,jdbcType=BIGINT},</if>-->
+        <!--<if test="item.bankId != null">#{item.bankId,jdbcType=INTEGER},</if>-->
+        <!--<if test="item.bankName != null">#{item.bankName,jdbcType=VARCHAR},</if>-->
+        <!--<if test="item.type != null">#{item.type,jdbcType=VARCHAR},</if>-->
+        <!--<if test="item.code != null">#{item.code,jdbcType=VARCHAR},</if>-->
+        <!--<if test="item.time != null">#{item.time,jdbcType=VARCHAR},</if>-->
+        <!--<if test="item.name != null">#{item.name,jdbcType=VARCHAR},</if>-->
+        <!--<if test="item.fileName != null">#{item.fileName,jdbcType=VARCHAR},</if>-->
+        <!--<if test="item.path != null">#{item.path,jdbcType=VARCHAR},</if>-->
+        <!--<if test="item.parentZip != null">#{item.parentZip,jdbcType=VARCHAR},</if>-->
+        <!--<if test="item.updateTime != null">#{item.updateTime,jdbcType=TIMESTAMP},</if>-->
+        <!--<if test="item.updateUser != null">#{item.updateUser,jdbcType=VARCHAR},</if>-->
+        <!--<if test="item.departmentId != null">#{item.departmentId,jdbcType=INTEGER},</if>-->
+        <!--<if test="item.effect != null">#{item.effect,jdbcType=INTEGER},</if>-->
+        <!--<if test="item.status != null">#{item.status,jdbcType=INTEGER},</if>-->
+        <!--<if test="item.level != null">#{item.level,jdbcType=INTEGER},</if>-->
+        <!--<if test="item.param1 != null">#{item.param1,jdbcType=VARCHAR},</if>-->
+      <!--</trim>-->
+    <!--</foreach>-->
+  <!--</insert>-->
+  <insert id="inserts"  parameterType="java.util.List">
+    insert into qnyj_check_rule_info (id, type, times,
+    banks, subject_name, source_table,
+    source, source_name, rule,
+    target_table, target, target_name,
+    accuracy, note, success_message,
+    fail_message, rule_table_id)
+    values
+    <foreach collection="list" item="item" index="index" separator="," >
+      (#{item.id,jdbcType=BIGINT}, #{item.type,jdbcType=VARCHAR}, #{item.times,jdbcType=VARCHAR},
+      #{item.banks,jdbcType=VARCHAR}, #{item.subjectName,jdbcType=VARCHAR}, #{item.sourceTable,jdbcType=VARCHAR},
+      #{item.source,jdbcType=VARCHAR}, #{item.sourceName,jdbcType=VARCHAR}, #{item.rule,jdbcType=VARCHAR},
+      #{item.targetTable,jdbcType=VARCHAR}, #{item.target,jdbcType=VARCHAR}, #{item.targetName,jdbcType=VARCHAR},
+      #{item.accuracy,jdbcType=VARCHAR}, #{item.note,jdbcType=VARCHAR}, #{item.successMessage,jdbcType=VARCHAR},
+      #{item.failMessage,jdbcType=VARCHAR}, #{item.ruleTableId,jdbcType=INTEGER})
+    </foreach>
+  </insert>
+
+</mapper>

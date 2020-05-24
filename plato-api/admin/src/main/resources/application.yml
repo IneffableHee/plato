@@ -1,0 +1,14 @@
+server:
+  port: 8802
+  servlet:
+    context-path: /financialct/admin
+  tomcat:
+    uri-encoding: utf-8
+    basedir: /deployer/tomcat
+
+
+spring:
+  application:
+    name: financialct-admin
+  profiles:
+    include: common

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbrc.plato.user.dao.UserRoleMapper">
+  <resultMap id="BaseResultMap" type="com.cbrc.plato.user.model.UserRole">
+    <id column="ur_id" jdbcType="INTEGER" property="urId" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="param1" jdbcType="VARCHAR" property="param1" />
+    <result column="param2" jdbcType="VARCHAR" property="param2" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ur_id, user_id, role_id, create_time, param1, param2
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_user_role
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from qnyj_user_role
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cbrc.plato.user.model.UserRole">
+    insert into qnyj_user_role (ur_id, user_id, role_id,
+      create_time, param1, param2
+      )
+    values (#{urId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{roleId,jdbcType=INTEGER},
+      #{createTime,jdbcType=TIMESTAMP}, #{param1,jdbcType=VARCHAR}, #{param2,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cbrc.plato.user.model.UserRole">
+    insert into qnyj_user_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="urId != null">
+        ur_id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="param1 != null">
+        param1,
+      </if>
+      <if test="param2 != null">
+        param2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="urId != null">
+        #{urId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="param1 != null">
+        #{param1,jdbcType=VARCHAR},
+      </if>
+      <if test="param2 != null">
+        #{param2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cbrc.plato.user.model.UserRole">
+    update qnyj_user_role
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null">
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="param1 != null">
+        param1 = #{param1,jdbcType=VARCHAR},
+      </if>
+      <if test="param2 != null">
+        param2 = #{param2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ur_id = #{urId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cbrc.plato.user.model.UserRole">
+    update qnyj_user_role
+    set user_id = #{userId,jdbcType=INTEGER},
+      role_id = #{roleId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      param1 = #{param1,jdbcType=VARCHAR},
+      param2 = #{param2,jdbcType=VARCHAR}
+    where ur_id = #{urId,jdbcType=INTEGER}
+  </update>
+</mapper>

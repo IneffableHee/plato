@@ -22,94 +22,6 @@
             <!--<artifactId>spring-boot-starter</artifactId>-->
         <!--</dependency>-->
 
-        <!-- spring web -->
-        <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <!-- spring jdbc -->
-        <!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-jdbc</artifactId>
-            <version>${spring-jdbc.version}</version>
-        </dependency>
-        <!-- spring context -->
-        <!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-        <!-- spring webmvc -->
-        <!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${spring-webmvc.version}</version>
-        </dependency>
-        <!-- spring aspect -->
-        <!-- https://mvnrepository.com/artifact/org.springframework/spring-aspects -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aspects</artifactId>
-            <version>${spring-aspects.version}</version>
-        </dependency>
-        <!-- javax.websocket-api -->
-        <!-- https://mvnrepository.com/artifact/javax.websocket/javax.websocket-api -->
-        <dependency>
-            <groupId>javax.websocket</groupId>
-            <artifactId>javax.websocket-api</artifactId>
-            <version>1.1</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!--Mybatis+Spring整合-->
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis-spring</artifactId>
-            <version>${mybatis-spring.version}</version>
-        </dependency>
-        <!--mybatis依赖包-->
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>${mybatis.version}</version>
-        </dependency>
-        <!--mysql依赖包-->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql-connector-java.version}</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-            <version>${jackson-core.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.module</groupId>
-            <artifactId>jackson-module-jaxb-annotations</artifactId>
-            <version>${jackson-module.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson-databind.version}</version>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
@@ -156,11 +68,7 @@
             <artifactId>shiro-web</artifactId>
             <version>${shiro.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-core</artifactId>
-            <version>9.0.16</version>
-        </dependency>
+
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-cache</artifactId>
@@ -183,21 +91,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.2.3</version>
-        </dependency>
-
-        <dependency>
             <groupId>tk.mybatis</groupId>
             <artifactId>mapper-spring-boot-starter</artifactId>
             <version>1.1.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
-            <version>1.0.29</version>
         </dependency>
 
     </dependencies>

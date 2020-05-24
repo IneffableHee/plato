@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbrc.plato.core.basic.dao.CheckTableMapper">
+  <resultMap id="BaseResultMap" type="com.cbrc.plato.core.basic.model.CheckTable">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="mould_id" jdbcType="INTEGER" property="mouldId" />
+    <result column="checkRule" jdbcType="VARCHAR" property="checkRule" />
+    <result column="checkTarget" jdbcType="VARCHAR" property="checkTarget" />
+    <result column="toCheckTarget" jdbcType="VARCHAR" property="toCheckTarget" />
+    <result column="checkResults" jdbcType="VARCHAR" property="checkResults" />
+    <result column="wuIsPoor" jdbcType="VARCHAR" property="wuIsPoor" />
+    <result column="isWarning" jdbcType="INTEGER" property="isWarning" />
+    <result column="month" jdbcType="INTEGER" property="month" />
+    <result column="toCheckTargetValue" jdbcType="VARCHAR" property="toCheckTargetValue" />
+    <result column="checkTargetValue" jdbcType="VARCHAR" property="checkTargetValue" />
+    <result column="projectName" jdbcType="VARCHAR" property="projectName" />
+    <result column="projectTargetName" jdbcType="VARCHAR" property="projectTargetName" />
+    <result column="toTableForSource" jdbcType="VARCHAR" property="toTableForSource" />
+    <result column="tableForSource" jdbcType="VARCHAR" property="tableForSource" />
+    <result column="bankName" jdbcType="VARCHAR" property="bankName" />
+    <result column="toTableForSourceCell" jdbcType="VARCHAR" property="toTableForSourceCell" />
+    <result column="tableForSourceCell" jdbcType="VARCHAR" property="tableForSourceCell" />
+    <result column="param" jdbcType="VARCHAR" property="param" />
+    <result column="param1" jdbcType="VARCHAR" property="param1" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, mould_id, checkRule, checkTarget, toCheckTarget, checkResults, wuIsPoor, isWarning,
+    month, toCheckTargetValue, checkTargetValue, projectName, projectTargetName, toTableForSource,
+    tableForSource, bankName, toTableForSourceCell, tableForSourceCell, param,param1
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_check_table
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByMouldId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_check_table
+    where mould_id = #{mouldId,jdbcType=INTEGER}
+  </select>
+  <select id="fuzzySearching" resultMap="BaseResultMap"  >
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_check_table where mould_id = #{mouldId}
+    <if test="projectTargetName != null ">
+      and  projectTargetName like  CONCAT(CONCAT('%',#{projectTargetName}),'%')
+    </if>
+    <if test="projectName != null">
+      and projectName like  CONCAT(CONCAT('%',#{projectName}),'%')
+    </if>
+    <if test="toCheckTarget != null">
+      and toCheckTarget like  CONCAT(CONCAT('%',#{toCheckTarget}),'%')
+    </if>
+    <if test="checkTarget != null">
+      and checkTarget like   CONCAT(CONCAT('%',#{checkTarget}),'%')
+    </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from qnyj_check_table
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByPrimaryKeyAll" parameterType="java.lang.Integer">
+        delete from qnyj_check_table
+        where mould_id = #{mouldId,jdbcType=INTEGER}
+   </delete>
+  <insert id="insertSelective" parameterType="com.cbrc.plato.core.basic.model.CheckTable">
+    insert into qnyj_check_table
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mouldId != null">
+        mould_id,
+      </if>
+      <if test="checkRule != null">
+        checkRule,
+      </if>
+      <if test="checkTarget != null">
+        checkTarget,
+      </if>
+      <if test="toCheckTarget != null">
+        toCheckTarget,
+      </if>
+      <if test="checkResults != null">
+        checkResults,
+      </if>
+      <if test="wuIsPoor != null">
+        wuIsPoor,
+      </if>
+      <if test="isWarning != null">
+        isWarning,
+      </if>
+      <if test="month != null">
+        month,
+      </if>
+      <if test="toCheckTargetValue != null">
+        toCheckTargetValue,
+      </if>
+      <if test="checkTargetValue != null">
+        checkTargetValue,
+      </if>
+      <if test="projectName != null">
+        projectName,
+      </if>
+      <if test="projectTargetName != null">
+        projectTargetName,
+      </if>
+      <if test="toTableForSource != null">
+        toTableForSource,
+      </if>
+      <if test="tableForSource != null">
+        tableForSource,
+      </if>
+      <if test="bankName != null">
+        bankName,
+      </if>
+      <if test="toTableForSourceCell != null">
+        toTableForSourceCell,
+      </if>
+      <if test="tableForSourceCell != null">
+        tableForSourceCell,
+      </if>
+      <if test="param != null">
+        param,
+      </if>
+      <if test="param1 != null">
+        param1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mouldId != null">
+         #{mouldId,jdbcType=INTEGER},
+      </if>
+      <if test="checkRule != null">
+         #{checkRule,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTarget != null">
+         #{checkTarget,jdbcType=VARCHAR},
+      </if>
+      <if test="toCheckTarget != null">
+         #{toCheckTarget,jdbcType=VARCHAR},
+      </if>
+      <if test="checkResults != null">
+         #{checkResults,jdbcType=VARCHAR},
+      </if>
+      <if test=" wuIsPoor!= null">
+       #{wuIsPoor,jdbcType=VARCHAR},
+      </if>
+      <if test="isWarning != null">
+         #{isWarning,jdbcType=INTEGER},
+      </if>
+      <if test="month != null">
+         #{month,jdbcType=INTEGER},
+      </if>
+      <if test="toCheckTargetValue != null">
+          #{toCheckTargetValue,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTargetValue != null">
+          #{checkTargetValue,jdbcType=VARCHAR},
+      </if>
+      <if test="projectName != null">
+         #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectTargetName != null">
+         #{projectTargetName,jdbcType=VARCHAR},
+      </if>
+      <if test="toTableForSource != null">
+        #{toTableForSource,jdbcType=VARCHAR},
+      </if>
+      <if test="tableForSource != null">
+          #{tableForSource,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null">
+          #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="toTableForSourceCell != null">
+          #{toTableForSourceCell,jdbcType=VARCHAR},
+      </if>
+      <if test="tableForSourceCell != null">
+         #{tableForSourceCell,jdbcType=VARCHAR},
+      </if>
+      <if test="param != null">
+          #{param,jdbcType=VARCHAR},
+      </if>
+      <if test="param1 != null">
+        #{param1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cbrc.plato.core.basic.model.CheckTable">
+    update qnyj_check_table
+    <set>
+      <if test="mouldId != null">
+        mould_id = #{mouldId,jdbcType=INTEGER},
+      </if>
+      <if test="checkRule != null">
+        checkRule = #{checkRule,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTarget != null">
+        checkTarget = #{checkTarget,jdbcType=VARCHAR},
+      </if>
+      <if test="toCheckTarget != null">
+        toCheckTarget = #{toCheckTarget,jdbcType=VARCHAR},
+      </if>
+      <if test="checkResults != null">
+        checkResults = #{checkResults,jdbcType=VARCHAR},
+      </if>
+      <if test=" wuIsPoor!= null">
+        wuIsPoor = #{wuIsPoor,jdbcType=VARCHAR},
+      </if>
+      <if test="isWarning != null">
+        isWarning = #{isWarning,jdbcType=INTEGER},
+      </if>
+      <if test="month != null">
+        month = #{month,jdbcType=INTEGER},
+      </if>
+      <if test="toCheckTargetValue != null">
+        toCheckTargetValue = #{toCheckTargetValue,jdbcType=VARCHAR},
+      </if>
+      <if test="checkTargetValue != null">
+        checkTargetValue = #{checkTargetValue,jdbcType=VARCHAR},
+      </if>
+      <if test="projectName != null">
+        projectName = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectTargetName != null">
+        projectTargetName = #{projectTargetName,jdbcType=VARCHAR},
+      </if>
+      <if test="toTableForSource != null">
+        toTableForSource = #{toTableForSource,jdbcType=VARCHAR},
+      </if>
+      <if test="tableForSource != null">
+        tableForSource = #{tableForSource,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null">
+        bankName = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="toTableForSourceCell != null">
+        toTableForSourceCell = #{toTableForSourceCell,jdbcType=VARCHAR},
+      </if>
+      <if test="tableForSourceCell != null">
+        tableForSourceCell = #{tableForSourceCell,jdbcType=VARCHAR},
+      </if>
+      <if test="param != null">
+        param = #{param,jdbcType=VARCHAR},
+      </if>
+      <if test="param1 != null">
+        param1 = #{param1,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cbrc.plato.core.basic.model.CheckTable">
+    update qnyj_check_table
+    set mould_id = #{mouldId,jdbcType=INTEGER},
+      checkRule = #{checkrule,jdbcType=VARCHAR},
+      checkTarget = #{checktarget,jdbcType=VARCHAR},
+      toCheckTarget = #{tochecktarget,jdbcType=VARCHAR},
+      checkResults = #{checkresults,jdbcType=VARCHAR},
+      wuIsPoor = #{wuispoor,jdbcType=VARCHAR},
+      isWarning = #{iswarning,jdbcType=INTEGER},
+      month = #{month,jdbcType=INTEGER},
+      toCheckTargetValue = #{tochecktargetvalue,jdbcType=VARCHAR},
+      checkTargetValue = #{checktargetvalue,jdbcType=VARCHAR},
+      projectName = #{projectname,jdbcType=VARCHAR},
+      projectTargetName = #{projecttargetname,jdbcType=VARCHAR},
+      toTableForSource = #{totableforsource,jdbcType=VARCHAR},
+      tableForSource = #{tableforsource,jdbcType=VARCHAR},
+      bankName = #{bankname,jdbcType=VARCHAR},
+      toTableForSourceCell = #{totableforsourcecell,jdbcType=VARCHAR},
+      tableForSourceCell = #{tableforsourcecell,jdbcType=VARCHAR},
+      param = #{param,jdbcType=VARCHAR},
+         param1 = #{param1,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+  <insert id="insertBatchList">
+    INSERT INTO qnyj_check_table (id, mould_id, checkRule,
+    checkTarget, toCheckTarget, checkResults,
+    wuIsPoor, isWarning, month,
+    toCheckTargetValue, checkTargetValue, projectName,
+    projectTargetName, toTableForSource, tableForSource,
+    bankName, toTableForSourceCell, tableForSourceCell,
+    param)
+    VALUES
+    <foreach collection="list" close="" index="index" item="item" open="" separator=",">
+      (#{item.id},#{item.mouldId},#{item.checkRule},#{item.checkTarget},#{item.toCheckTarget},#{item.checkResults},#{item.wuIsPoor},#{item.isWarning},
+      #{item.month},#{item.toCheckTargetValue},#{item.checkTargetValue},#{item.projectName},#{item.projectTargetName},#{item.toTableForSource},#{item.tableForSource},
+      #{item.bankName},#{item.toTableForSourceCell},#{item.tableForSourceCell},#{item.param})
+    </foreach>
+  </insert>
+</mapper>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbrc.plato.user.dao.RoleMapper">
+  <resultMap id="BaseResultMap" type="com.cbrc.plato.user.model.Role">
+    <id column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="role_code" jdbcType="VARCHAR" property="roleCode" />
+    <result column="role_description" jdbcType="VARCHAR" property="roleDescription" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="role_status" jdbcType="INTEGER" property="roleStatus" />
+    <result column="param1" jdbcType="VARCHAR" property="param1" />
+    <result column="param2" jdbcType="VARCHAR" property="param2" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    role_id, role_name, role_code, role_description, parent_id, create_time, role_status,
+    param1, param2
+  </sql>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_role
+  </select>
+
+  <select id="selectAllByRoleName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_role
+    <if test="roleName != '' ">
+      where role_name like  CONCAT(CONCAT('%',#{roleName}),'%')
+    </if>
+  </select>
+
+  <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_role
+    where role_name = #{roleByName,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_role
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from qnyj_role
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertRole" parameterType="com.cbrc.plato.user.model.Role">
+    insert into qnyj_role (role_id, role_name, role_code,
+      role_description, parent_id, create_time,
+      role_status, param1, param2
+      )
+    values (#{roleId,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{roleCode,jdbcType=VARCHAR},
+      #{roleDescription,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+      #{roleStatus,jdbcType=INTEGER}, #{param1,jdbcType=VARCHAR}, #{param2,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cbrc.plato.user.model.Role">
+    insert into qnyj_role
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        role_id,
+      </if>
+      <if test="roleName != null">
+        role_name,
+      </if>
+      <if test="roleCode != null">
+        role_code,
+      </if>
+      <if test="roleDescription != null">
+        role_description,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="roleStatus != null">
+        role_status,
+      </if>
+      <if test="param1 != null">
+        param1,
+      </if>
+      <if test="param2 != null">
+        param2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="roleId != null">
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="roleName != null">
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleCode != null">
+        #{roleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleDescription != null">
+        #{roleDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roleStatus != null">
+        #{roleStatus,jdbcType=INTEGER},
+      </if>
+      <if test="param1 != null">
+        #{param1,jdbcType=VARCHAR},
+      </if>
+      <if test="param2 != null">
+        #{param2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.cbrc.plato.user.model.Role">
+    update qnyj_role
+    <set>
+      <if test="roleName != null">
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleCode != null">
+        role_code = #{roleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleDescription != null">
+        role_description = #{roleDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="roleStatus != null">
+        role_status = #{roleStatus,jdbcType=INTEGER},
+      </if>
+      <if test="param1 != null">
+        param1 = #{param1,jdbcType=VARCHAR},
+      </if>
+      <if test="param2 != null">
+        param2 = #{param2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cbrc.plato.user.model.Role">
+    update qnyj_role
+    set role_name = #{roleName,jdbcType=VARCHAR},
+      role_code = #{roleCode,jdbcType=VARCHAR},
+      role_description = #{roleDescription,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      role_status = #{roleStatus,jdbcType=INTEGER},
+      param1 = #{param1,jdbcType=VARCHAR},
+      param2 = #{param2,jdbcType=VARCHAR}
+    where role_id = #{roleId,jdbcType=INTEGER}
+  </update>
+</mapper>

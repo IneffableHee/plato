@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbrc.plato.core.basic.dao.QnyjYuqi90EastMapper">
+  <resultMap id="BaseResultMap" type="com.cbrc.plato.util.datarule.model.QnyjYuqi90East">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="bankId" jdbcType="INTEGER" property="bankid" />
+    <result column="bankName" jdbcType="VARCHAR" property="bankname" />
+    <result column="dataValue" jdbcType="VARCHAR" property="datavalue" />
+    <result column="description" jdbcType="VARCHAR" property="describe" />
+    <result column="param" jdbcType="VARCHAR" property="param" />
+    <result column="param1" jdbcType="VARCHAR" property="param1" />
+    <result column="dataTime" jdbcType="VARCHAR" property="datatime" />
+      <result column="dataName" jdbcType="VARCHAR" property="dataName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, bankId, bankName,description, dataValue, param, param1, dataTime,dataName
+  </sql>
+
+  <select id="selectByTime"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_yuqi90_east
+    where
+    dataTime =#{dataTime,jdbcType=VARCHAR}
+    and dataName=#{dataName,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_yuqi90_east
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from qnyj_yuqi90_east
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cbrc.plato.core.basic.model.QnyjYuqi90East">
+    insert into qnyj_yuqi90_east (id, bankId, bankName,
+      dataValue, description, param,
+      param1, dataTime,dataName)
+    values (#{id,jdbcType=INTEGER}, #{bankid,jdbcType=INTEGER}, #{bankname,jdbcType=VARCHAR},
+      #{datavalue,jdbcType=INTEGER}, #{describe,jdbcType=VARCHAR}, #{param,jdbcType=VARCHAR},
+      #{param1,jdbcType=VARCHAR}, #{datatime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cbrc.plato.core.basic.model.QnyjYuqi90East">
+    insert into qnyj_yuqi90_east
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="bankid != null">
+        bankId,
+      </if>
+      <if test="bankname != null">
+        bankName,
+      </if>
+      <if test="datavalue != null">
+        dataValue,
+      </if>
+      <if test="describe != null">
+        describe,
+      </if>
+      <if test="param != null">
+        param,
+      </if>
+      <if test="param1 != null">
+        param1,
+      </if>
+      <if test="datatime != null">
+        dataTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bankid != null">
+        #{bankid,jdbcType=INTEGER},
+      </if>
+      <if test="bankname != null">
+        #{bankname,jdbcType=VARCHAR},
+      </if>
+      <if test="datavalue != null">
+        #{datavalue,jdbcType=INTEGER},
+      </if>
+      <if test="describe != null">
+        #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="param != null">
+        #{param,jdbcType=VARCHAR},
+      </if>
+      <if test="param1 != null">
+        #{param1,jdbcType=VARCHAR},
+      </if>
+      <if test="datatime != null">
+        #{datatime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cbrc.plato.core.basic.model.QnyjYuqi90East">
+    update qnyj_yuqi90_east
+    <set>
+      <if test="bankid != null">
+        bankId = #{bankid,jdbcType=INTEGER},
+      </if>
+      <if test="bankname != null">
+        bankName = #{bankname,jdbcType=VARCHAR},
+      </if>
+      <if test="datavalue != null">
+        dataValue = #{datavalue,jdbcType=INTEGER},
+      </if>
+      <if test="describe != null">
+        describe = #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="param != null">
+        param = #{param,jdbcType=VARCHAR},
+      </if>
+      <if test="param1 != null">
+        param1 = #{param1,jdbcType=VARCHAR},
+      </if>
+      <if test="datatime != null">
+        dataTime = #{datatime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!--<update id="updateByPrimaryKey" parameterType="com.cbrc.plato.core.basic.model.QnyjYuqi90East">
+    update qnyj_yuqi90_east
+    set bankId = #{bankid,jdbcType=INTEGER},
+      bankName = #{bankname,jdbcType=VARCHAR},
+      dataValue = #{datavalue,jdbcType=INTEGER},
+      describe = #{describe,jdbcType=VARCHAR},
+      param = #{param,jdbcType=VARCHAR},
+      param1 = #{param1,jdbcType=VARCHAR},
+      dataTime = #{datatime,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>-->
+
+  <insert id="updateByPrimaryKey" parameterType="java.util.List">
+      insert into qnyj_yuqi90_east ( bankId, bankName,
+      dataValue, description, param,
+      param1, dataTime,dataName)values
+      <foreach collection="list" item="item" index="index" separator=",">
+        (#{item.bankid,jdbcType=INTEGER}, #{item.bankname,jdbcType=VARCHAR},
+        #{item.datavalue,jdbcType=VARCHAR}, #{item.describe,jdbcType=VARCHAR}, #{item.param,jdbcType=VARCHAR},
+        #{item.param1,jdbcType=VARCHAR}, #{item.datatime,jdbcType=VARCHAR}, #{item.dataName,jdbcType=VARCHAR})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        bankId = values (bankId),bankName = values (bankName),dataValue = values (dataValue),description = values (description),param = values (param),param1 = values (param1),
+        dataTime = values (dataTime), dataName = values (dataName)
+  </insert>
+</mapper>

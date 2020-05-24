@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbrc.plato.core.basic.dao.BankTypeMapper">
+  <resultMap id="BaseResultMap" type="com.cbrc.plato.util.datarule.model.BankType">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="bank_type" jdbcType="VARCHAR" property="bankType" />
+    <result column="banks" jdbcType="VARCHAR" property="banks" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, bank_type, banks
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from qnyj_bank_type
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from qnyj_bank_type
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.cbrc.plato.util.datarule.model.BankType">
+    insert into qnyj_bank_type (id, bank_type, banks
+      )
+    values (#{id,jdbcType=INTEGER}, #{bankType,jdbcType=VARCHAR}, #{banks,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cbrc.plato.util.datarule.model.BankType">
+    insert into qnyj_bank_type
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="bankType != null">
+        bank_type,
+      </if>
+      <if test="banks != null">
+        banks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="bankType != null">
+        #{bankType,jdbcType=VARCHAR},
+      </if>
+      <if test="banks != null">
+        #{banks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cbrc.plato.util.datarule.model.BankType">
+    update qnyj_bank_type
+    <set>
+      <if test="bankType != null">
+        bank_type = #{bankType,jdbcType=VARCHAR},
+      </if>
+      <if test="banks != null">
+        banks = #{banks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cbrc.plato.util.datarule.model.BankType">
+    update qnyj_bank_type
+    set bank_type = #{bankType,jdbcType=VARCHAR},
+      banks = #{banks,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbrc.plato.core.basic.dao.DataJZDMapper">
+  <resultMap id="BaseResultMap" type="com.cbrc.plato.util.datarule.datainfo.DataJZD">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="bank_id" jdbcType="BIGINT" property="bankId" />
+    <result column="time" jdbcType="VARCHAR" property="time" />
+    <result column="custome_name" jdbcType="VARCHAR" property="customeName" />
+    <result column="customer_type" jdbcType="VARCHAR" property="customerType" />
+    <result column="fxzh" jdbcType="VARCHAR" property="fxzh" />
+    <result column="yjzbjeb" jdbcType="VARCHAR" property="yjzbjeb" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, bank_id, time, custome_name, customer_type, fxzh, yjzbjeb
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from qnyj_data_jzd
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByBankIdAndTime" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_data_jzd
+    where bank_id = #{bankId,jdbcType=BIGINT}
+    and time = #{time,jdbcType=VARCHAR}  order by cast(fxzh as SIGNED ) desc limit 10
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from qnyj_data_jzd
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.cbrc.plato.util.datarule.datainfo.DataJZD">
+    insert into qnyj_data_jzd (id, bank_id, time, 
+      custome_name, customer_type, fxzh, 
+      yjzbjeb)
+    values (#{id,jdbcType=BIGINT}, #{bankId,jdbcType=BIGINT}, #{time,jdbcType=VARCHAR}, 
+      #{customeName,jdbcType=VARCHAR}, #{customerType,jdbcType=VARCHAR}, #{fxzh,jdbcType=VARCHAR}, 
+      #{yjzbjeb,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cbrc.plato.util.datarule.datainfo.DataJZD">
+    insert into qnyj_data_jzd
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="bankId != null">
+        bank_id,
+      </if>
+      <if test="time != null">
+        time,
+      </if>
+      <if test="customeName != null">
+        custome_name,
+      </if>
+      <if test="customerType != null">
+        customer_type,
+      </if>
+      <if test="fxzh != null">
+        fxzh,
+      </if>
+      <if test="yjzbjeb != null">
+        yjzbjeb,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="bankId != null">
+        #{bankId,jdbcType=BIGINT},
+      </if>
+      <if test="time != null">
+        #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="customeName != null">
+        #{customeName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerType != null">
+        #{customerType,jdbcType=VARCHAR},
+      </if>
+      <if test="fxzh != null">
+        #{fxzh,jdbcType=VARCHAR},
+      </if>
+      <if test="yjzbjeb != null">
+        #{yjzbjeb,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cbrc.plato.util.datarule.datainfo.DataJZD">
+    update qnyj_data_jzd
+    <set>
+      <if test="bankId != null">
+        bank_id = #{bankId,jdbcType=BIGINT},
+      </if>
+      <if test="time != null">
+        time = #{time,jdbcType=VARCHAR},
+      </if>
+      <if test="customeName != null">
+        custome_name = #{customeName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerType != null">
+        customer_type = #{customerType,jdbcType=VARCHAR},
+      </if>
+      <if test="fxzh != null">
+        fxzh = #{fxzh,jdbcType=VARCHAR},
+      </if>
+      <if test="yjzbjeb != null">
+        yjzbjeb = #{yjzbjeb,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cbrc.plato.util.datarule.datainfo.DataJZD">
+    update qnyj_data_jzd
+    set bank_id = #{bankId,jdbcType=BIGINT},
+      time = #{time,jdbcType=VARCHAR},
+      custome_name = #{customeName,jdbcType=VARCHAR},
+      customer_type = #{customerType,jdbcType=VARCHAR},
+      fxzh = #{fxzh,jdbcType=VARCHAR},
+      yjzbjeb = #{yjzbjeb,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <insert id="inserts" parameterType="java.util.List">
+    insert into qnyj_data_jzd
+    (bank_id, time,custome_name, customer_type, fxzh,yjzbjeb)
+    values <foreach collection="list" item="item" index="index" separator=",">
+    (#{item.bankId,jdbcType=BIGINT},
+    #{item.time,jdbcType=VARCHAR},
+    #{item.customeName,jdbcType=VARCHAR},
+    #{item.customerType,jdbcType=VARCHAR},
+    #{item.fxzh,jdbcType=INTEGER},
+    #{item.yjzbjeb,jdbcType=VARCHAR})
+  </foreach>
+    ON DUPLICATE KEY UPDATE
+    bank_id = values (bank_id), time = values (time),custome_name = values (custome_name)
+  </insert>
+</mapper>

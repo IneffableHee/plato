@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbrc.plato.core.basic.dao.DataInfoMapper">
+  <resultMap id="BaseResultMap" type="com.cbrc.plato.core.basic.model.DataInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="group_id" jdbcType="INTEGER" property="groupId" />
+    <result column="excel_code" jdbcType="VARCHAR" property="excelCode" />
+    <result column="data_name" jdbcType="VARCHAR" property="dataName" />
+    <result column="data_source" jdbcType="VARCHAR" property="dataSource" />
+    <result column="data_type" jdbcType="VARCHAR" property="dataType" />
+    <result column="only_code" jdbcType="VARCHAR" property="onlyCode" />
+    <result column="parent" jdbcType="VARCHAR" property="parent" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="rule_id" jdbcType="INTEGER" property="ruleId" />
+    <result column="param2" jdbcType="VARCHAR" property="param2" />
+  </resultMap>
+  <resultMap id="BankGroupBaseResultMap" type="com.cbrc.plato.core.basic.model.Bank">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="short_name" jdbcType="VARCHAR" property="shortName" />
+    <result column="group_id" jdbcType="INTEGER" property="groupId" />
+    <result column="dep_id" jdbcType="INTEGER" property="depId" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="statistic" jdbcType="INTEGER" property="statistic" />
+    <result column="param1" jdbcType="VARCHAR" property="param1" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, group_id, excel_code, data_name, data_source, data_type,only_code, parent, status, description,
+    rule_id, param2
+  </sql>
+
+  <select id="selectAllOnlyCode" resultMap="BaseResultMap">
+    select  * from qnyj_data_info where only_code in(Select min(only_code) FROM qnyj_data_info group by only_code)
+  </select>
+
+  <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_data_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!--根据groupId分组取id最大的-->
+  <select id="selectOrderByMaxId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_data_info
+     where group_id = #{groupId,jdbcType=INTEGER} order by id  desc limit 0,1
+  </select>
+<!--   // 向页面返回取数规则 -->
+  <select id="toViewRulesByOnlyCodes"   resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_data_info
+    where    only_code in ( ${onlyCodes})
+  </select>
+    <!--   // 向页面返回取数规则 2-->
+    <select id="toViewRulesByGroupIdDataNames"   resultMap="BaseResultMap">
+      <if test="parent == null ">
+        select id, group_id, excel_code, data_name, data_source, data_type,only_code, parent, status, description,
+        rule_id, param2 from (
+        select id, group_id, excel_code, data_name, data_source, data_type,only_code, parent, status, description,
+        rule_id, param2 from  qnyj_data_info  where  data_name in( ${dataNames}) and group_id = ${groupId} ) a
+         where    a.parent IS NULL  OR a.parent = ''
+      </if>
+      <if test="parent != null ">
+        select
+        <include refid="Base_Column_List" />
+        from qnyj_data_info
+        where group_id = ${groupId}  and   data_name in ( ${dataNames}) and    parent =#{parent}
+      </if>
+    </select>
+  <select id="selectByOnlyCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_data_info
+    where only_code = #{onlyCode,jdbcType=VARCHAR}
+  </select>
+
+  <select id="selectByOnlyCodeAndGroupId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_data_info
+    where only_code = #{onlyCode,jdbcType=VARCHAR} and
+    group_id = #{gid,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectAllDataInfo"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_data_info where group_id in (SELECT id from qnyj_bank_group where id IN (
+    select permission_url from qnyj_permission where permission_type = 3 and  permission_id in
+    ( select permission_id from qnyj_role_permission where role_id = #{roleId}))  or parent_id in
+    (select permission_url from qnyj_permission where permission_type = 3 and  permission_id in
+    ( select permission_id from qnyj_role_permission where role_id = #{roleId})))
+  </select>
+
+  <select id="selectBankGroupList"  resultMap="BankGroupBaseResultMap" parameterType="java.lang.Integer">
+    select * from (select * from qnyj_bank_group where id in (select group_id from qnyj_data_info GROUP BY group_id)) a where a.id in
+    (select permission_url from qnyj_permission where
+     permission_type = 3 and  permission_id in ( select permission_id from qnyj_role_permission where role_id = #{roleId})) or a.parent_id in
+    (select permission_url from qnyj_permission where
+     permission_type = 3 and  permission_id in ( select permission_id from qnyj_role_permission where role_id = #{roleId})) ;
+  </select>
+
+  <select id="getDataInfoListByGroupId"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_data_info where group_id in (SELECT id from qnyj_bank_group where id IN (
+    select permission_url from qnyj_permission where permission_type = 3 and  permission_id in
+    ( select permission_id from qnyj_role_permission where role_id = #{roleId}))  or parent_id in
+    (select permission_url from qnyj_permission where permission_type = 3 and  permission_id in
+    ( select permission_id from qnyj_role_permission where role_id = #{roleId})))
+    <if test="groupId != null ">
+      and   group_id =#{groupId}
+    </if>
+</select>
+
+  <select id="dataInfoListPageByCode"  resultMap="BaseResultMap">
+    select * from  (select a.id ,a.excel_code , a.group_id, a.data_name , a.data_source , a.data_type, a.only_code , a.parent , b.name as param2
+    from qnyj_data_info a LEFT JOIN qnyj_bank_group b on a.group_id = b.id
+    where group_id in (select permission_url from qnyj_permission where permission_type = 3 and  permission_id in ( select permission_id from qnyj_role_permission where role_id = #{roleId}))
+    or b.parent_id in (select permission_url from qnyj_permission where permission_type = 3 and  permission_id in
+    ( select permission_id from qnyj_role_permission where role_id = #{roleId}))) bbb
+    <if test="groupId != null ">
+      where bbb.group_id =#{groupId}
+    </if>
+    <if test="dataName != null and  dataName != ''">
+      and bbb.data_name like  CONCAT(CONCAT('%',#{dataName}),'%')
+    </if>
+  </select>
+
+  <!--<select id="dataInfoListPage"  resultMap="BaseResultMap">-->
+    <!--select-->
+    <!--<include refid="Base_Column_List" />-->
+    <!--from qnyj_data_info  order by  data_type-->
+  <!--</select> -->
+  <select id="dataInfoListPage"  resultMap="BaseResultMap">
+   select
+   a.id,a.group_id,a.excel_code,a.data_name,a.data_source,a.data_type,a.only_code,a.parent,a.status,a.param2,a.rule_id,b.name as description
+  from qnyj_data_info a,qnyj_bank_group b WHERE b.id = a.group_id  ORDER BY a.group_id
+</select>
+
+  <select id="selectMonthDataInfo"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_data_info where group_id in (SELECT id from qnyj_bank_group where id IN (
+    select permission_url from qnyj_permission where permission_type = 3 and  permission_id in
+    ( select permission_id from qnyj_role_permission where role_id = #{roleId}))  or parent_id in
+    (select permission_url from qnyj_permission where permission_type = 3 and  permission_id in
+    ( select permission_id from qnyj_role_permission where role_id = #{roleId})))
+    and data_type = "月报"
+  </select>
+
+  <select id="getMonthDataInfoListByGroupId"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_data_info where group_id in (SELECT id from qnyj_bank_group where id IN (
+    select permission_url from qnyj_permission where permission_type = 3 and  permission_id in
+    ( select permission_id from qnyj_role_permission where role_id = #{roleId}))  or parent_id in
+    (select permission_url from qnyj_permission where permission_type = 3 and  permission_id in
+    ( select permission_id from qnyj_role_permission where role_id = #{roleId}))) and data_type = "月报"
+    <if test="groupId != null ">
+      and   group_id =#{groupId}
+    </if>
+  </select>
+
+  <select id="selectGroupId"  resultType="Integer">
+     select
+     group_id
+     from qnyj_data_info
+  </select>
+
+  <select id="selectAllExcelCode"  resultMap="BaseResultMap">
+     select <include refid="Base_Column_List" />
+      from qnyj_data_info t where t.excel_code = #{excelCode} AND T.excel_code in ( select tt.excel_code from qnyj_data_info tt GROUP BY tt.excel_code)
+       and t.group_id = #{groupId} and t.data_source LIKE CONCAT(CONCAT('%',#{param2}),'%');
+  </select>
+
+  <select id="selectByGroupId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_data_info
+    where group_id = #{gid,jdbcType=INTEGER}
+  </select>
+
+  <select id="getDataInfoByQuanXia" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_data_info
+    where group_id = #{gid,jdbcType=INTEGER} and t.parent is null or t.parent = ''
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from qnyj_data_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <delete id="deleteAllByOnlyCode" parameterType="java.lang.String">
+    delete from qnyj_data_info
+    where only_code = #{code,jdbcType=VARCHAR}
+    or parent = #{code,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.cbrc.plato.core.basic.model.DataInfo" useGeneratedKeys="true">
+    insert into qnyj_data_info (group_id, excel_code, data_name,
+      data_source, data_type,only_code, parent,
+      status, description, rule_id,
+      param2)
+    values (#{groupId,jdbcType=INTEGER}, #{excelCode,jdbcType=VARCHAR}, #{dataName,jdbcType=VARCHAR},
+      #{dataSource,jdbcType=VARCHAR}, #{dataType,jdbcType=VARCHAR}, #{onlyCode,jdbcType=VARCHAR},#{parent,jdbcType=VARCHAR},
+      #{status,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{ruleId,jdbcType=INTEGER},
+      #{param2,jdbcType=VARCHAR})
+  </insert>
+
+  <insert id="insertBatchList">
+    INSERT INTO qnyj_data_info (group_id, excel_code, data_name,
+    data_source, data_type, only_code,parent,
+    status, description, rule_id,param2)
+    VALUES
+    <foreach collection="list" close="" index="index" item="item" open="" separator=",">
+      (#{item.groupId},#{item.excelCode},#{item.dataName},#{item.dataSource},#{item.dataType},#{item.onlyCode},#{item.parent},#{item.status},#{item.description},#{item.ruleId},#{item.param2})
+    </foreach>
+  </insert>
+
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.cbrc.plato.core.basic.model.DataInfo" useGeneratedKeys="true">
+    insert into qnyj_data_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="excelCode != null">
+        excel_code,
+      </if>
+      <if test="dataName != null">
+        data_name,
+      </if>
+      <if test="dataSource != null">
+        data_source,
+      </if>
+      <if test="dataType != null">
+        data_type,
+      </if>
+      <if test="onlyCode != null">
+        only_code,
+      </if>
+      <if test="parent != null">
+        parent,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="ruleId != null">
+        rule_id,
+      </if>
+      <if test="param2 != null">
+        param2,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="groupId != null">
+        #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="excelCode != null">
+        #{excelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dataName != null">
+        #{dataName,jdbcType=VARCHAR},
+      </if>
+      <if test="dataSource != null">
+        #{dataSource,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null">
+        #{dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="onlyCode != null">
+        #{onlyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="parent != null">
+        #{parent,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleId != null">
+        #{ruleId,jdbcType=INTEGER},
+      </if>
+      <if test="param2 != null">
+        #{param2,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cbrc.plato.core.basic.model.DataInfo">
+    update qnyj_data_info
+    <set>
+      <if test="groupId != null">
+        group_id = #{groupId,jdbcType=INTEGER},
+      </if>
+      <if test="excelCode != null">
+        excel_code = #{excelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="dataName != null">
+        data_name = #{dataName,jdbcType=VARCHAR},
+      </if>
+      <if test="dataSource != null">
+        data_source = #{dataSource,jdbcType=VARCHAR},
+      </if>
+      <if test="dataType != null">
+        data_type = #{dataType,jdbcType=VARCHAR},
+      </if>
+      <if test="onlyCode != null">
+        only_code = #{onlyCode,jdbcType=VARCHAR},
+      </if>
+      <if test="parent != null">
+        parent = #{parent,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="ruleId != null">
+        rule_id = #{ruleId,jdbcType=INTEGER},
+      </if>
+      <if test="param2 != null">
+        param2 = #{param2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cbrc.plato.core.basic.model.DataInfo">
+    update qnyj_data_info
+    set group_id = #{groupId,jdbcType=INTEGER},
+      excel_code = #{excelCode,jdbcType=VARCHAR},
+      data_name = #{dataName,jdbcType=VARCHAR},
+      data_source = #{dataSource,jdbcType=VARCHAR},
+      data_type = #{dataType,jdbcType=VARCHAR},
+      only_code = #{onlyCode,jdbcType=VARCHAR},
+      parent = #{parent,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      rule_id = #{ruleId,jdbcType=INTEGER},
+      param2 = #{param2,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <update id="updates" parameterType="java.util.List">
+    <foreach collection="list" item="item" separator=";">
+      update qnyj_data_info
+      <set>
+        <if test="item.groupId != null">group_id = #{item.groupId,jdbcType=INTEGER},</if>
+        <if test="item.excelCode != null"> excel_code = #{item.excelCode,jdbcType=VARCHAR},</if>
+        <if test="item.dataName != null">data_name = #{item.dataName,jdbcType=VARCHAR},</if>
+        <if test="item.dataSource != null">data_source = #{item.dataSource,jdbcType=VARCHAR},</if>
+        <if test="item.dataType != null">data_type = #{item.dataType,jdbcType=VARCHAR},</if>
+        <if test="item.onlyCode != null">only_code = #{item.onlyCode,jdbcType=VARCHAR},</if>
+        <if test="item.parent != null">parent = #{item.parent,jdbcType=VARCHAR},</if>
+        <if test="item.status != null">status = #{item.status,jdbcType=INTEGER},</if>
+        <if test="item.description != null">description = #{item.description,jdbcType=VARCHAR},</if>
+        <if test="item.ruleId != null">rule_id = #{item.ruleId,jdbcType=INTEGER},</if>
+        <if test="item.param2 != null">param2 = #{item.param2,jdbcType=VARCHAR}</if>
+      </set>
+      where id = #{item.id,jdbcType=INTEGER}
+    </foreach>
+  </update>
+
+</mapper>

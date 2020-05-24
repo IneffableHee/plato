@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cbrc.plato.core.basic.dao.QnyjExcelUploadErrorMapper">
+  <resultMap id="BaseResultMap" type="com.cbrc.plato.core.basic.model.QnyjExcelUploadError">
+    <result column="id" jdbcType="BIGINT" property="id" />
+    <result column="file_name" jdbcType="VARCHAR" property="fileName" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="create_author" jdbcType="VARCHAR" property="createAuthor" />
+    <result column="fail_reason" jdbcType="VARCHAR" property="failReason" />
+    <result column="param1" jdbcType="VARCHAR" property="param1" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, file_name, code, create_time, create_author, fail_reason,param1
+  </sql>
+  <select id="selectFileErrorList" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from qnyj_excel_upload_error
+    <if test="code != '' ">
+      where code like  CONCAT(CONCAT('%', #{code}), '%')
+     </if>
+    order by create_time desc
+  </select>
+
+  <delete id="deleteByPrimaryKeyAllExcel" parameterType="java.lang.String">
+    delete from qnyj_excel_upload_error
+    where id in (${ids})
+  </delete>
+
+  <insert id="insertBatchErrorList" parameterType="java.util.List">
+    insert into qnyj_excel_upload_error(file_name, code,create_time,create_author, fail_reason, param1) VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.fileName,jdbcType=VARCHAR},#{item.code,jdbcType=VARCHAR},#{item.createTime,jdbcType=VARCHAR},#{item.createAuthor,jdbcType=VARCHAR},#{item.failReason,jdbcType=VARCHAR},#{item.param1,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+
+  <insert id="insert" parameterType="com.cbrc.plato.core.basic.model.QnyjExcelUploadError">
+    insert into qnyj_excel_upload_error (id, file_name, code,create_time,
+      create_author, fail_reason, param1
+      )
+    values (#{id,jdbcType=BIGINT}, #{fileName,jdbcType=VARCHAR},  #{code,jdbcType=VARCHAR},#{createTime,jdbcType=VARCHAR},
+      #{createAuthor,jdbcType=VARCHAR}, #{failReason,jdbcType=VARCHAR}, #{param1,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cbrc.plato.core.basic.model.QnyjExcelUploadError">
+    insert into qnyj_excel_upload_error
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="fileName != null">
+        file_name,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createAuthor != null">
+        create_author,
+      </if>
+      <if test="failReason != null">
+        fail_reason,
+      </if>
+      <if test="param1 != null">
+        param1,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="fileName != null">
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="createAuthor != null">
+        #{createAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="failReason != null">
+        #{failReason,jdbcType=VARCHAR},
+      </if>
+      <if test="param1 != null">
+        #{param1,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>
