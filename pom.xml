@@ -49,7 +49,7 @@
         <shiro-redis.version>3.1.0</shiro-redis.version>
 
         <!--dao 模块-->
-        <mysql-connector-java.version>8.0.11</mysql-connector-java.version>
+        <mysql-connector-java.version>8.0.16</mysql-connector-java.version>
         <spring-jdbc.version>4.3.5.RELEASE</spring-jdbc.version>
         <c3p0.version>0.9.1.2</c3p0.version>
 
